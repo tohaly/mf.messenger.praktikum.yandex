@@ -2,7 +2,3 @@
   width: 100%;
   display: flex;
 }
-
-.messages-window__start-container_hidden {
-  display: none;
-}
