@@ -1,0 +1,10 @@
+.message__text {
+  margin: 0;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  background-color: #2f8be7;
+  padding: 4px 8px;
+  border-radius: 10px;
+  align-self: flex-start;
+}
