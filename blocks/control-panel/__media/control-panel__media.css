@@ -1,0 +1,6 @@
+.control-panel__media {
+  background-color: #1c1d21;
+  align-self: center;
+  display: flex;
+  padding: 8px;
+}

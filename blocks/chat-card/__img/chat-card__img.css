@@ -1,0 +1,6 @@
+.chat-card__img {
+  align-self: center;
+  margin-right: 16px;
+  width: 70px;
+  cursor: pointer;
+}

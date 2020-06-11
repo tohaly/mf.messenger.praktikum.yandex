@@ -1,0 +1,9 @@
+@import url("./__icon/search-form__icon.css");
+@import url("./__input/search-form__input.css");
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-left: 32px;
+}

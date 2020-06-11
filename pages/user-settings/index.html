@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      rel="shortcut icon"
+      href="../../images/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Simple chat</title>
+  </head>
+  <body class="page">
+    <div class="root">
+      <header class="header">
+        <a href="../index.html" class="header__logo-link">
+          <div class="header__logo-img"></div>
+          <h1 class="header__title">Simple chat</h1>
+        </a>
+        <div class="header__hamburger"></div>
+      </header>
+      <main class="main-content">
+        <div class="auth-user-settings">
+          <h2 class="auth-user-settings__title">User settings</h2>
+          <div class="auth-user-settings__container">
+            <img
+              class="auth-user-settings__img"
+              src="../../images/example-user-img.jpg"
+              alt="user-avatar"
+            />
+            <div class="auth">
+              <form class="auth__form">
+                <input type="text" class="auth__input" placeholder="name" />
+                <span class="auth__error">Failed required</span>
+                <input type="text" class="auth__input" placeholder="login" />
+                <span class="auth__error auth__error_active"
+                  >Failed required</span
+                >
+                <input type="text" class="auth__input" placeholder="email" />
+                <span class="auth__error">Failed required</span>
+                <input
+                  type="email"
+                  class="auth__input"
+                  placeholder="old password"
+                />
+                <span class="auth__error">Failed required</span>
+                <input
+                  type="password"
+                  class="auth__input"
+                  placeholder="new password"
+                />
+                <span class="auth__error">Failed required</span>
+                <input
+                  type="password"
+                  class="auth__input"
+                  placeholder="new password else"
+                />
+                <span class="auth__error">Failed required</span>
+              </form>
+            </div>
+          </div>
+          <span class="auth__error auth__error_server">Server error</span>
+          <button class="button auth-user-settings__button">
+            Save changes
+          </button>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+@import url("./__img/chat-card__img.css");
+@import url("./__text/chat-card__text.css");
+@import url("./__title/chat-card__title.css");
+@import url("./__content/chat-card__content.css");
+
+.chat-card {
+  display: flex;
+  font-family: "Tahoma", Arial, Helvetica, sans-serif;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.chat-card_active {
+  background-color: #090c15;
+}
