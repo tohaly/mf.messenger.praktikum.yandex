@@ -1,0 +1,31 @@
+.button {
+  background-color: #2f8be7;
+  font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #fff;
+  border: none;
+  font-size: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: transform 0.4s;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.button:active {
+  outline: none;
+  background-color: #0f5496;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:disabled {
+  background-color: #c7c7c7;
+  cursor: auto;
+  transform: none;
+}

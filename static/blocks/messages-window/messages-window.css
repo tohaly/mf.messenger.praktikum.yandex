@@ -1,0 +1,13 @@
+@import url("./__start-container/messages-window__start-container.css");
+@import url("./__start-container-text/messages-window__start-container-text.css");
+@import url("./__container/messages-window__container.css");
+@import url("./__date-separator/messages-window__date-separator.css");
+@import url("./__list/messages-window__list.css");
+@import url("./__start-container/_hidden/messages-window__start-container_hidden.css");
+@import url("./__container/_hidden/messages-window__container_hidden.css");
+
+.messages-window {
+  display: flex;
+  width: 100%;
+  color: #fff;
+}

@@ -1,0 +1,10 @@
+.messages-window__start-container-text {
+  font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: normal;
+  font-style: normal;
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  opacity: 0.6;
+}

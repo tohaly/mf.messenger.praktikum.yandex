@@ -1,0 +1,22 @@
+.aside-panel__search-input {
+  font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
+  color: #fff;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0;
+  padding: 6px 0;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+  display: block;
+}
+
+.aside-panel__search-input::placeholder {
+  opacity: 0.5;
+}
+
+.aside-panel__search-input:focus {
+  outline: none;
+  border-bottom: 1px solid rgb(250, 249, 249, 0.5);
+}

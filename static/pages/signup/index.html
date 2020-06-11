@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      rel="shortcut icon"
+      href="../../images/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Simple chat</title>
+  </head>
+  <body class="page">
+    <div class="root">
+      <header class="header">
+        <a href="../../" class="header__logo-link">
+          <div class="header__logo-img"></div>
+          <h1 class="header__title">Simple chat</h1>
+        </a>
+        <div class="header__hamburger"></div>
+      </header>
+      <main class="main-content">
+        <div class="auth-with-container">
+          <div class="auth">
+            <h2 class="auth__title">Signup</h2>
+            <form class="auth__form">
+              <input type="text" class="auth__input" placeholder="email" />
+              <span class="auth__error">Failed required</span>
+              <input type="text" class="auth__input" placeholder="login" />
+              <span class="auth__error auth__error_active"
+                >Failed required</span
+              >
+              <input
+                type="password"
+                class="auth__input"
+                placeholder="password"
+              />
+              <span class="auth__error">Failed required</span>
+              <input
+                type="password"
+                class="auth__input"
+                placeholder="password"
+              />
+              <span class="auth__error">Failed required</span>
+              <span class="auth__error auth__error_server">Server error</span>
+              <button class="button auth__button">Signup</button>
+              <a href="../signin/" class="link auth__link">or login</a>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
