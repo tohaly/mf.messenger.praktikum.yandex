@@ -1,0 +1,5 @@
+.control-panel__form {
+  display: flex;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}

@@ -1,0 +1,16 @@
+.search-form__input {
+  color: #fff;
+  font-family: "Righteous";
+  font-size: 32px;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+}
+
+.search-form__input::placeholder {
+  opacity: 0.5;
+}

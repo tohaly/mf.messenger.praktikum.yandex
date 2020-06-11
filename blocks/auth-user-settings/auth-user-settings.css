@@ -1,0 +1,12 @@
+@import url("./__container/auth-user-settings__container.css");
+@import url("./__img/auth-user-settings__img.css");
+@import url("./__button/auth-user-settings__button.css");
+@import url("./__title/auth-user-settings__title.css");
+
+.auth-user-settings {
+  align-self: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}

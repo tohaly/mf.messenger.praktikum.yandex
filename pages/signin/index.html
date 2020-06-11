@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      rel="shortcut icon"
+      href="../../images/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Simple chat</title>
+  </head>
+  <body class="page">
+    <div class="root">
+      <header class="header">
+        <a href="../index.html" class="header__logo-link">
+          <div class="header__logo-img"></div>
+          <h1 class="header__title">Simple chat</h1>
+        </a>
+        <div class="header__hamburger"></div>
+      </header>
+      <main class="main-content">
+        <div class="auth-with-container">
+          <div class="auth">
+            <h1 class="auth__title">Login</h1>
+            <form class="auth__form">
+              <input type="text" class="auth__input" placeholder="login" />
+              <span class="auth__error auth__error_active"
+                >Failed required</span
+              >
+              <input
+                type="password"
+                class="auth__input"
+                placeholder="password"
+              />
+              <span class="auth__error">Failed required</span>
+              <span class="auth__error auth__error_server auth__error_active"
+                >Server error</span
+              >
+              <button class="button auth__button" disabled>Login</button>
+              <a href="../signup/index.html" class="link auth__link"
+                >don't have an account?</a
+              >
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

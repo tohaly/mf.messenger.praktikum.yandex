@@ -1,0 +1,16 @@
+@import url("./__form/control-panel__form.css");
+@import url("./__input/control-panel__input.css");
+@import url("./__media/control-panel__media.css");
+@import url("./__send-button/control-panel__send-button.css");
+@import url("./__media-item/control-panel__media-item.css");
+@import url("./__media-item/_camera/control-panel__media-item_camera.css");
+@import url("./__media-item/_file/control-panel__media-item_file.css");
+@import url("./__media-item/_mic/control-panel__media-item_mic.css");
+@import url("./__emojis/control-panel__emojis.css");
+
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  font-family: "Tahoma", Arial, Helvetica, sans-serif;
+  margin-bottom: 16px;
+}
