@@ -1,34 +1,30 @@
 # Simple chat
 
+## Описание
+
+Клиент мессенджера позволяющий обмениваться сообщениями.
+
 ## Технологии
 
 HTML, CSS, БЭМ
 
-## Как пользоваться?
+## Ссылки
 
-1. Склонировать репозиторий
-2. Навигация по страницам
+```
+https://ecstatic-edison-b968c0.netlify.app/ - главная
+https://ecstatic-edison-b968c0.netlify.app/pages/signin/ - вход;
+https://ecstatic-edison-b968c0.netlify.app/pages/signup/ - регистрация;
+https://ecstatic-edison-b968c0.netlify.app/pages/user-settings/ - настройки пользователя;
+https://ecstatic-edison-b968c0.netlify.app/pages/not-found/ - ошибка не найдено;
+https://ecstatic-edison-b968c0.netlify.app/pages/server-error/ - ошибка сервера.
+```
 
-   Для удобства лучше установить live-server либо http-server(предварительно требуется установка node.js, npm).
+## Полезные команды
 
-   ```
-   npm i live-server - устанавливаем live-server
-   ```
+```
+Данный команды нужно скопировать и вставить в консоль.
 
-   После установки в директории проекта выполнить команду
+document.querySelector('.messages-window__start-container').classList.remove('messages-window__start-container_hidden');document.querySelector('.messages-window__container').classList.add('messages-window__container_hidden'); - Показать начальный экран;
 
-   ```
-   live-server
-   ```
-
-   Ссылки
-
-   ```
-     http://127.0.0.1:8080/pages/ - главная;
-     http://127.0.0.1:5500/pages/signup/ - регистрация;
-     http://127.0.0.1:5500/pages/signin/ - вход;
-     http://127.0.0.1:5500/pages/user-settings/ - настройки пользователя;
-     http://127.0.0.1:5500/pages/not-found/ - 404;
-     http://127.0.0.1:5500/pages/server-error/ - 500;
-
-   ```
+document.querySelector('.messages-window__start-container').classList.add('messages-window__start-container_hidden');document.querySelector('.messages-window__container').classList.remove('messages-window__container_hidden'); - Показать экран сообщений.
+```
