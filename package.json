@@ -8,8 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "node app.js",
-    "deploy": "git checkout deploy & git merge master & git add . & git commit -m 'Deploy' & git push origin deploy & git checkout master"
+    "dev": "node app.js"
   },
   "repository": {
     "type": "git",
