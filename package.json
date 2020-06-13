@@ -1,0 +1,24 @@
+{
+  "name": "mf.messenger.praktikum.yandex",
+  "version": "1.0.0",
+  "description": "Клиент мессенджера позволяющий обмениваться сообщениями.",
+  "main": "app.js",
+  "dependencies": {
+    "express": "4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "node app.js",
+    "deploy": "git checkout deploy & git merge master & git add . & git commit -m 'Deploy' & git push deploy & git checkout master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tohaly/mf.messenger.praktikum.yandex.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tohaly/mf.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/tohaly/mf.messenger.praktikum.yandex#readme"
+}
