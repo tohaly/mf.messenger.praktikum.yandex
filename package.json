@@ -8,7 +8,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "node app.js"
+    "dev": "node app.js",
+    "deploy": "git checkout deploy & git merge & git checkout master"
   },
   "repository": {
     "type": "git",
