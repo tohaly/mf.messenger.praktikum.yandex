@@ -27,7 +27,7 @@ window.InputValidate = class Input {
       }
 
       if (
-        element.placeholder === "login" &&
+        (element.placeholder === "login" || element.placeholder === "name") &&
         (element.validity.tooLong || element.validity.tooShort)
       ) {
         this.toggleError(neighbor, true, this.INCORRECT_LOGIN);
