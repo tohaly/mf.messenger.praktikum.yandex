@@ -5,6 +5,7 @@
 @import url("./__input/auth__input.css");
 @import url("./__link/auth__link.css");
 @import url("./__title/auth__title.css");
+@import url("./__input-wrapper/form__input-wrapper.css");
 @import url("./__error/_active/auth__error_active.css");
 
 .auth {

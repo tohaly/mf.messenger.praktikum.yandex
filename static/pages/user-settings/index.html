@@ -12,60 +12,14 @@
     <title>Simple chat</title>
   </head>
   <body class="page">
-    <div class="root">
-      <header class="header">
-        <a href="../../" class="header__logo-link">
-          <div class="header__logo-img"></div>
-          <h1 class="header__title">Simple chat</h1>
-        </a>
-        <div class="header__hamburger"></div>
-      </header>
-      <main class="main-content">
-        <div class="auth-user-settings">
-          <h2 class="auth-user-settings__title">User settings</h2>
-          <div class="auth-user-settings__container">
-            <img
-              class="auth-user-settings__img"
-              src="../../images/example-user-img.jpg"
-              alt="user-avatar"
-            />
-            <div class="auth">
-              <form class="auth__form">
-                <input type="text" class="auth__input" placeholder="name" />
-                <span class="auth__error">Failed required</span>
-                <input type="text" class="auth__input" placeholder="login" />
-                <span class="auth__error auth__error_active"
-                  >Failed required</span
-                >
-                <input type="text" class="auth__input" placeholder="email" />
-                <span class="auth__error">Failed required</span>
-                <input
-                  type="email"
-                  class="auth__input"
-                  placeholder="old password"
-                />
-                <span class="auth__error">Failed required</span>
-                <input
-                  type="password"
-                  class="auth__input"
-                  placeholder="new password"
-                />
-                <span class="auth__error">Failed required</span>
-                <input
-                  type="password"
-                  class="auth__input"
-                  placeholder="new password else"
-                />
-                <span class="auth__error">Failed required</span>
-              </form>
-            </div>
-          </div>
-          <span class="auth__error auth__error_server">Server error</span>
-          <button class="button auth-user-settings__button">
-            Save changes
-          </button>
-        </div>
-      </main>
-    </div>
+    <script src="../../js/util/simple-template-engine.js"></script>
+    <script src="../../js/logDataForm.js"></script>
+    <script src="../../js/components/Input/input.js"></script>
+    <script src="../../js/components/Title.ste.js"></script>
+    <script src="../../js/components/Header.ste.js"></script>
+    <script src="../../js/components/Avatar.ste.js"></script>
+    <script src="../../js/components/Input/Input.ste.js"></script>
+    <script src="../../js/components/Button.ste.js"></script>
+    <script src="./index.ste.js"></script>
   </body>
 </html>

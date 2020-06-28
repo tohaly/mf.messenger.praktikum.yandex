@@ -5,4 +5,9 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+  display: none;
+}
+
+.control-panel__send-button_active {
+  display: block;
 }

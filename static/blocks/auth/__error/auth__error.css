@@ -3,4 +3,5 @@
   color: #ff0000;
   margin-bottom: 10px;
   visibility: hidden;
+  min-height: 16px;
 }

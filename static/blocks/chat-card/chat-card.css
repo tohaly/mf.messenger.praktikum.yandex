@@ -8,6 +8,7 @@
   font-family: "Tahoma", Arial, Helvetica, sans-serif;
   color: #fff;
   padding: 8px 16px;
+  z-index: 5;
 }
 
 .chat-card_active {
