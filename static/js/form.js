@@ -33,7 +33,7 @@ window.Form = class Form {
   }
 
   _validateForm() {
-    if (this._form.checkValidity()) {
+    if (this._form.checkValidity() && this._checkValidMismatchPassword()) {
       this._toggleButton(true);
     } else {
       this._toggleButton(false);
@@ -112,15 +112,32 @@ window.Form = class Form {
         this._toggleError(neighbor, true, this._PASSWORD_COINCIDES);
       }
     }
+  }
 
-    if (element.classList.contains("auth__input_old-password")) {
-      const nextNeighbor = element.parentNode.nextElementSibling.querySelector(
+  _checkValidMismatchPassword() {
+    const repeatPassword = this._form.querySelector(
+      ".auth__input_repeat-password"
+    );
+    const newPassword = this._form.querySelector(".auth__input_new-password");
+
+    if (repeatPassword) {
+      const prevPassword = repeatPassword.parentNode.previousElementSibling.querySelector(
         "input"
       ).value;
-      if (nextNeighbor && nextNeighbor !== element.value) {
-        this._toggleError(neighbor, true, this._PASSWORD_MISMATCH);
+      if (prevPassword !== repeatPassword.value) {
+        return false;
       }
     }
+
+    if (newPassword) {
+      const prevPassword = newPassword.parentNode.previousElementSibling.querySelector(
+        "input"
+      ).value;
+      if (prevPassword === newPassword.value) {
+        return false;
+      }
+    }
+    return true;
   }
 
   setOnBlurHandler = (event) => {
