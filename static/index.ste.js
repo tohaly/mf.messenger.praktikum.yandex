@@ -49,7 +49,7 @@
     },
   };
   const { card, messageAvatar } = data;
-  const SignInPageTemplate = `
+  const MainPage = `
   <div class="root">
       ${Header.compile()}
       <main class="main-content">
@@ -135,12 +135,18 @@
           </div>
         </section>
       </main>
+      <footer class="footer">
+        <h2 class="footer__title">Useful links</h2>        
+        <a href="./pages/signin" class="footer__test-link">Signin</a>
+        <a href="./pages/signup" class="footer__test-link">Signup</a>
+        <a href="./pages/user-settings" class="footer__test-link">User settings</a>
+        <a href="./pages/not-found" class="footer__test-link">404</a>
+        <a href="./pages/server-error" class="footer__test-link">500</a>
+      </footer>
     </div>
 `;
 
   document
     .querySelector(".page")
-    .appendChild(
-      new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
-    );
+    .appendChild(new window.SimpleTemplateEngine(MainPage).getNode(data));
 })();

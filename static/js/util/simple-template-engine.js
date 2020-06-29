@@ -1,9 +1,9 @@
 window.SimpleTemplateEngine = class SimpleTemplateEngine {
-  TEMPLATE_REGEXP = /\{\%(.*?)\%\}/gi;
+  _TEMPLATE_REGEXP = /\{\%(.*?)\%\}/gi;
+  _REGEXP_CTX = /\(\)\(\%(.*?)\%\)/gi;
 
   constructor(template) {
     this._template = template;
-    this.parent = parent;
   }
 
   compile(ctx, className) {
@@ -23,7 +23,7 @@ window.SimpleTemplateEngine = class SimpleTemplateEngine {
   _compileTemplate(ctx) {
     let tmpl = this._template;
     let key = null;
-    const regExp = this.TEMPLATE_REGEXP;
+    const regExp = this._TEMPLATE_REGEXP;
 
     while ((key = regExp.exec(tmpl))) {
       if (key[1]) {
@@ -34,11 +34,15 @@ window.SimpleTemplateEngine = class SimpleTemplateEngine {
           window[tmplValue] = data;
           tmpl = tmpl.replace(
             new RegExp(key[0], "gi"),
-            `window.${key[1].trim()}.bind(this)()`
+            `window.${key[1].trim()}()`
           );
+
+          const keyCtx = this._REGEXP_CTX.exec(tmpl);
+          if (keyCtx) {
+            tmpl = tmpl.replace(keyCtx[0], `.${keyCtx[1].trim()}()`);
+          }
           continue;
         }
-
         tmpl = tmpl.replace(new RegExp(key[0], "gi"), data);
       }
     }

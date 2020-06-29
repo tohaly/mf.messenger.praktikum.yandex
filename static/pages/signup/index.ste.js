@@ -1,6 +1,4 @@
 (function () {
-  const inputValidate = new window.InputValidate();
-
   const headerTemplate = window.Header;
   const titleTemplate = window.Title;
   const inputTemplate = window.Input;
@@ -21,9 +19,10 @@
           attributes: `
           type="email" 
           placeholder="email" 
-          pattern="^[0-9A-Za-z]{1}[-0-9A-z\\.]{1,}[0-9A-Za-z]{1}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
+          pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
           required
           `,
+          className: "auth__input_email",
         },
         {
           attributes: `
@@ -33,6 +32,7 @@
           maxlength="20"
           required
         `,
+          className: "auth__input_login",
         },
         {
           attributes: `
@@ -43,6 +43,7 @@
           autocomplete="on"
           required
         `,
+          className: "auth__input_password",
         },
         {
           attributes: `
@@ -53,16 +54,9 @@
           autocomplete="on"
           required
         `,
+          className: "auth__input_repeat-password",
         },
       ],
-      methods: {
-        onFocus() {
-          return inputValidate.onFocus(this);
-        },
-        onBlur() {
-          return inputValidate.onBlur(this);
-        },
-      },
     },
     signupButton: {
       handleClick() {
@@ -79,10 +73,7 @@
     .map((item) => {
       return `
       <div class="form__input-wrapper">
-        ${Input.compile(
-          Object.assign(item, inputs.methods),
-          "auth__input"
-        )}           
+        ${Input.compile(item, `auth__input ${item.className}`)}           
         <span class="auth__error">Failed required</span>
       </div>`;
     })
@@ -117,3 +108,15 @@
       new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
     );
 })();
+
+const formContainer = document.querySelector("form");
+const inputsContainer = formContainer.querySelectorAll("input");
+
+const form = new window.Form(formContainer);
+
+inputsContainer.forEach((input) => {
+  input.addEventListener("focus", form.setOnFocusHandler);
+  input.addEventListener("blur", form.setOnBlurHandler);
+});
+
+formContainer.addEventListener("input", form.setInputHandler);

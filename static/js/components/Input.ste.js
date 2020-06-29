@@ -3,8 +3,6 @@ window.Input = (function () {
     <input
       class="input"
       {% attributes %}
-      onBlur="{% onBlur %}"
-      onFocus="{% onFocus %}"
     />
   `;
 })();

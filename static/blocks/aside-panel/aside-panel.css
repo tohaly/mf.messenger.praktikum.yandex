@@ -11,6 +11,5 @@
   max-width: 400px;
   width: 100%;
   background-color: #1c1d21;
-  height: calc(100vh - 100px - 35px - 16px);
   overflow: hidden;
 }

@@ -1,6 +1,4 @@
 (function () {
-  const inputValidate = new window.InputValidate();
-
   const headerTemplate = window.Header;
   const titleTemplate = window.Title;
   const inputTemplate = window.Input;
@@ -23,6 +21,7 @@
           maxlength="20"
           required
         `,
+          className: "auth__input_login",
         },
         {
           attributes: `
@@ -33,16 +32,9 @@
           autocomplete="on"
           required
         `,
+          className: "auth__input_password",
         },
       ],
-      methods: {
-        onFocus() {
-          return inputValidate.onFocus(this);
-        },
-        onBlur() {
-          return inputValidate.onBlur(this);
-        },
-      },
     },
     signinButton: {
       handleClick() {
@@ -58,13 +50,10 @@
   const inputWrappers = inputs.attributes
     .map((item) => {
       return `
-    <div class="form__input-wrapper">
-      ${Input.compile(
-        Object.assign(item, inputs.methods),
-        "auth__input"
-      )}           
-      <span class="auth__error">Failed required</span>
-    </div>`;
+        <div class="form__input-wrapper">
+          ${Input.compile(item, `auth__input ${item.className}`)}           
+          <span class="auth__error">Failed required</span>
+        </div>`;
     })
     .join("\n");
 
@@ -98,3 +87,15 @@
       new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
     );
 })();
+
+const formContainer = document.querySelector("form");
+const inputsContainer = formContainer.querySelectorAll("input");
+
+const form = new window.Form(formContainer);
+
+inputsContainer.forEach((input) => {
+  input.addEventListener("focus", form.setOnFocusHandler);
+  input.addEventListener("blur", form.setOnBlurHandler);
+});
+
+formContainer.addEventListener("input", form.setInputHandler);
