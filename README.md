@@ -24,15 +24,10 @@ npm run dev
 npm run deploy
 ```
 
-## Ссылки
+## Ссылка на развернутый проект
 
 ```
-https://ecstatic-edison-b968c0.netlify.app/ - главная
-https://ecstatic-edison-b968c0.netlify.app/pages/signin/ - вход;
-https://ecstatic-edison-b968c0.netlify.app/pages/signup/ - регистрация;
-https://ecstatic-edison-b968c0.netlify.app/pages/user-settings/ - настройки пользователя;
-https://ecstatic-edison-b968c0.netlify.app/pages/not-found/ - ошибка не найдено;
-https://ecstatic-edison-b968c0.netlify.app/pages/server-error/ - ошибка сервера.
+https://ecstatic-edison-b968c0.netlify.app/
 ```
 
 ## Полезные команды
