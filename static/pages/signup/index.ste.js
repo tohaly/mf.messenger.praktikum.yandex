@@ -125,12 +125,13 @@
   const inputsContainer = formContainer.querySelectorAll("input");
   const formButton = document.querySelector(".auth__button");
 
-  const customFormValidate = (form) => {
+  const customFormValidate = () => {
     inputClones.forEach((input) => {
       input.handleFocus();
       input.handleBlur();
     });
-    if (form["password"] !== form["repeat-password"]) return false;
+    if (form.virtualForm["password"] !== form.virtualForm["repeat-password"])
+      return false;
     return true;
   };
 

@@ -159,13 +159,16 @@
   const inputsContainer = formContainer.querySelectorAll("input");
   const formButton = document.querySelector(".auth__button");
 
-  const customFormValidate = (form) => {
+  const customFormValidate = () => {
+    const { virtualForm } = form;
     inputClones.forEach((input) => {
       input.handleFocus();
       input.handleBlur();
     });
-    if (form["new-password"] !== form["repeat-password"]) return false;
-    if (form["old-password"] === form["new-password"]) return false;
+    if (virtualForm["new-password"] !== virtualForm["repeat-password"])
+      return false;
+    if (virtualForm["old-password"] === virtualForm["new-password"])
+      return false;
     return true;
   };
 

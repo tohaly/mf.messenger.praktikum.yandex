@@ -25,7 +25,7 @@ window.Form = class {
   formIsValid = (event) => {
     this._saveValue(event);
 
-    if (this._form.checkValidity() && this._customValidator(this.virtualForm)) {
+    if (this._form.checkValidity() && this._customValidator()) {
       this._toggleButton(true);
       return;
     }
