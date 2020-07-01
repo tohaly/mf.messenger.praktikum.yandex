@@ -64,9 +64,12 @@ window.SimpleTemplateEngine = class SimpleTemplateEngine {
     return result || defaultValue;
   }
 
-  getNode(ctx) {
+  getNode(ctx, className) {
     const element = document.createElement("div");
-    element.insertAdjacentHTML("beforeend", this.compile(ctx).trim());
+    element.insertAdjacentHTML(
+      "beforeend",
+      this.compile(ctx, className).trim()
+    );
     return element.firstChild;
   }
 

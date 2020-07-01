@@ -3,6 +3,7 @@ window.Input = (function () {
     <input
       class="input"
       {% attributes %}
+      name="{% name %}"
     />
   `;
 })();

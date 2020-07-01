@@ -9,22 +9,24 @@
   const Input = new window.SimpleTemplateEngine(inputTemplate);
   const Button = new window.SimpleTemplateEngine(buttonTemplate);
 
+  const { passwordValidator, simpleTextValidator } = window;
+
   const data = {
     title: { text: "Signin" },
-    inputs: {
-      attributes: [
-        {
-          attributes: `
+    inputs: [
+      {
+        attributes: `
           type="text"
           placeholder="login" 
           minlength="2"
           maxlength="20"
           required
         `,
-          className: "auth__input_login",
-        },
-        {
-          attributes: `
+        name: "login",
+        handleBlur: simpleTextValidator,
+      },
+      {
+        attributes: `
           type="password" 
           placeholder="password" 
           pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
@@ -32,14 +34,15 @@
           autocomplete="on"
           required
         `,
-          className: "auth__input_password",
-        },
-      ],
-    },
+        name: "password",
+        handleBlur: passwordValidator,
+      },
+    ],
+
     signinButton: {
       handleClick() {
         event.preventDefault();
-        return window.logDataForm(this);
+        console.log(form.getData());
       },
       text: "Signin",
     },
@@ -47,11 +50,11 @@
 
   const { inputs, signinButton, title } = data;
 
-  const inputWrappers = inputs.attributes
+  const inputWrappers = inputs
     .map((item) => {
       return `
         <div class="form__input-wrapper">
-          ${Input.compile(item, `auth__input ${item.className}`)}           
+          ${Input.compile(item, "auth__input")}           
           <span class="auth__error">Failed required</span>
         </div>`;
     })
@@ -86,16 +89,17 @@
     .appendChild(
       new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
     );
+
+  const formContainer = document.querySelector("form");
+  const inputsContainer = formContainer.querySelectorAll("input");
+  const formButton = document.querySelector(".auth__button");
+
+  const form = new window.Form(formContainer, formButton);
+  formContainer.addEventListener("input", form.formIsValid);
+
+  inputsContainer.forEach((element, i) => {
+    const input = new window.InputValidate(element, inputs[i].handleBlur);
+    element.addEventListener("focus", input.handleFocus);
+    element.addEventListener("blur", input.handleBlur);
+  });
 })();
-
-const formContainer = document.querySelector("form");
-const inputsContainer = formContainer.querySelectorAll("input");
-
-const form = new window.Form(formContainer);
-
-inputsContainer.forEach((input) => {
-  input.addEventListener("focus", form.setOnFocusHandler);
-  input.addEventListener("blur", form.setOnBlurHandler);
-});
-
-formContainer.addEventListener("input", form.setInputHandler);

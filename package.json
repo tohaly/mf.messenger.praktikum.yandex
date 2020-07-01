@@ -6,9 +6,11 @@
   "dependencies": {
     "express": "4.17.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "scripts": {
-    "dev": "node app.js",
+    "dev": "nodemon --watch app.js --watch ./static",
     "deploy": "git checkout deploy & git merge master & git push & git checkout master"
   },
   "repository": {

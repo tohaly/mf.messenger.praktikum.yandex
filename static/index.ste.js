@@ -49,6 +49,7 @@
     },
   };
   const { card, messageAvatar } = data;
+
   const MainPage = `
   <div class="root">
       ${Header.compile()}
@@ -113,7 +114,7 @@
                   type="text"
                   class="input control-panel__input"
                   placeholder="Start to write..."
-                  onInput="{% handleInput %}"
+                  onInput="{% handleInput %}(% bind(this) %)"
                 />
                 <button class="control-panel__send-button" onClick={% handleClickButton %}></button>
               </form>

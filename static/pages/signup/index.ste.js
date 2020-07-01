@@ -9,33 +9,36 @@
   const Input = new window.SimpleTemplateEngine(inputTemplate);
   const Button = new window.SimpleTemplateEngine(buttonTemplate);
 
+  const { passwordValidator, simpleTextValidator, emailValidator } = window;
+
   const data = {
     title: {
       text: "Signup",
     },
-    inputs: {
-      attributes: [
-        {
-          attributes: `
+    inputs: [
+      {
+        attributes: `
           type="email" 
           placeholder="email" 
           pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
           required
           `,
-          className: "auth__input_email",
-        },
-        {
-          attributes: `
+        name: "email",
+        handleBlur: emailValidator,
+      },
+      {
+        attributes: `
           type="text"
           placeholder="login" 
           minlength="2"
           maxlength="20"
           required
         `,
-          className: "auth__input_login",
-        },
-        {
-          attributes: `
+        name: "login",
+        handleBlur: simpleTextValidator,
+      },
+      {
+        attributes: `
           type="password" 
           placeholder="password" 
           pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
@@ -43,10 +46,11 @@
           autocomplete="on"
           required
         `,
-          className: "auth__input_password",
-        },
-        {
-          attributes: `
+        name: "password",
+        handleBlur: passwordValidator,
+      },
+      {
+        attributes: `
           type="password" 
           placeholder="repeat password" 
           pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
@@ -54,14 +58,21 @@
           autocomplete="on"
           required
         `,
-          className: "auth__input_repeat-password",
+        name: "repeat-password",
+        handleBlur(element, callback) {
+          const PASSWORD_MISMATCH = "Passwords mismatch";
+          if (element.value !== form.virtualForm["password"]) {
+            callback(true, PASSWORD_MISMATCH);
+            return;
+          }
         },
-      ],
-    },
+      },
+    ],
+
     signupButton: {
       handleClick() {
         event.preventDefault();
-        return window.logDataForm(this);
+        console.log(form.getData());
       },
       text: "Signup",
     },
@@ -69,11 +80,11 @@
 
   const { inputs, signupButton, title } = data;
 
-  const inputWrappers = inputs.attributes
+  const inputWrappers = inputs
     .map((item) => {
       return `
       <div class="form__input-wrapper">
-        ${Input.compile(item, `auth__input ${item.className}`)}           
+        ${Input.compile(item, "auth__input")}           
         <span class="auth__error">Failed required</span>
       </div>`;
     })
@@ -107,16 +118,28 @@
     .appendChild(
       new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
     );
+
+  const inputClones = [];
+
+  const formContainer = document.querySelector("form");
+  const inputsContainer = formContainer.querySelectorAll("input");
+  const formButton = document.querySelector(".auth__button");
+
+  const customFormValidate = (form) => {
+    inputClones.forEach((input) => {
+      input.handleFocus();
+      input.handleBlur();
+    });
+    if (form["password"] !== form["repeat-password"]) return false;
+    return true;
+  };
+
+  const form = new window.Form(formContainer, formButton, customFormValidate);
+  formContainer.addEventListener("input", form.formIsValid);
+  inputsContainer.forEach((element, i) => {
+    const input = new window.InputValidate(element, inputs[i].handleBlur);
+    inputClones.push(input);
+    element.addEventListener("focus", input.handleFocus);
+    element.addEventListener("blur", input.handleBlur);
+  });
 })();
-
-const formContainer = document.querySelector("form");
-const inputsContainer = formContainer.querySelectorAll("input");
-
-const form = new window.Form(formContainer);
-
-inputsContainer.forEach((input) => {
-  input.addEventListener("focus", form.setOnFocusHandler);
-  input.addEventListener("blur", form.setOnBlurHandler);
-});
-
-formContainer.addEventListener("input", form.setInputHandler);
