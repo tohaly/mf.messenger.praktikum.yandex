@@ -11,7 +11,8 @@
   },
   "scripts": {
     "dev": "nodemon --watch app.js --watch ./static",
-    "deploy": "git checkout deploy & git merge master & git push & git checkout master"
+    "deploy": "git checkout deploy & git merge master & git push & git checkout master",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",

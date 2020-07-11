@@ -1,54 +1,56 @@
-"use strict";
 (function () {
-    const headerTemplate = window.Header;
-    const chatCardTemplate = window.ChatCard;
-    const avatarTemplate = window.Avatar;
-    const Header = new window.SimpleTemplateEngine(headerTemplate);
-    const Avatar = new window.SimpleTemplateEngine(avatarTemplate);
-    const ChatCard = new window.SimpleTemplateEngine(chatCardTemplate);
-    const data = {
-        card: {
-            Avatar: Avatar.compile({
-                link: "./images/chat-card__img.png",
-                alt: "Avatar",
-                className: "chat-card__img",
-            }),
-            title: "Title",
-            text: "Sorry, its just that I get very ne...",
-            activateHandle() {
-                document.querySelectorAll(".chat-card").forEach((element) => {
-                    element.classList.remove("chat-card_active");
-                });
-                this.classList.add("chat-card_active");
-            },
-        },
-        messageAvatar: {
-            link: "./images/chat-card__img.png",
-            alt: "Avatar",
-            className: "message__avatar",
-        },
-        handleInput() {
-            const button = this.nextElementSibling;
-            const text = this.value;
-            const spaces = text.match(/\s*/)[0];
-            if (this.value && this.value !== spaces) {
-                button.classList.add("control-panel__send-button_active");
-            }
-            else {
-                button.classList.remove("control-panel__send-button_active");
-            }
-        },
-        handleClickButton(event) {
-            event.preventDefault();
-            const input = this.previousElementSibling;
-            const form = input.parentNode;
-            console.log(input.value);
-            form.reset();
-            this.classList.remove("control-panel__send-button_active");
-        },
-    };
-    const { card, messageAvatar } = data;
-    const MainPage = `
+  const headerTemplate = window.Header;
+  const chatCardTemplate = window.ChatCard;
+  const avatarTemplate = window.Avatar;
+
+  const Header = new window.SimpleTemplateEngine(headerTemplate);
+  const Avatar = new window.SimpleTemplateEngine(avatarTemplate);
+  const ChatCard = new window.SimpleTemplateEngine(chatCardTemplate);
+
+  const data = {
+    card: {
+      Avatar: Avatar.compile({
+        link: "./images/chat-card__img.png",
+        alt: "Avatar",
+        className: "chat-card__img",
+      }),
+      title: "Title",
+      text: "Sorry, its just that I get very ne...",
+      activateHandle() {
+        document.querySelectorAll(".chat-card").forEach((element) => {
+          element.classList.remove("chat-card_active");
+        });
+        this.classList.add("chat-card_active");
+      },
+    },
+    messageAvatar: {
+      link: "./images/chat-card__img.png",
+      alt: "Avatar",
+      className: "message__avatar",
+    },
+    handleInput() {
+      const button = this.nextElementSibling;
+      const text = this.value;
+      const spaces = text.match(/\s*/)[0];
+
+      if (this.value && this.value !== spaces) {
+        button.classList.add("control-panel__send-button_active");
+      } else {
+        button.classList.remove("control-panel__send-button_active");
+      }
+    },
+    handleClickButton(event: Event) {
+      event.preventDefault();
+      const input = this.previousElementSibling;
+      const form = input.parentNode;
+      console.log(input.value);
+      form.reset();
+      this.classList.remove("control-panel__send-button_active");
+    },
+  };
+  const { card, messageAvatar } = data;
+
+  const MainPage = `
   <div class="root">
       ${Header.compile()}
       <main class="main-content">
@@ -144,7 +146,8 @@
       </footer>
     </div>
 `;
-    document
-        .querySelector(".page")
-        .appendChild(new window.SimpleTemplateEngine(MainPage).getNode(data));
+
+  document
+    .querySelector(".page")
+    .appendChild(new window.SimpleTemplateEngine(MainPage).getNode(data));
 })();

@@ -1,6 +1,9 @@
-"use strict";
+interface Window {
+  Avatar: string;
+}
+
 window.Avatar = (function () {
-    return `
+  return `
   <img
     src="{% link %}"
     alt="{% alt %}"

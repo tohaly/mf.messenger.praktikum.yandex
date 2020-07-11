@@ -1,4 +1,8 @@
-window.Error = (function () {
+interface Window {
+  ErrorTmpl: string;
+}
+
+window.ErrorTmpl = (function () {
   return `
   <div class="error">
     <h1 class="error__title">{% errorCode %}</h1>

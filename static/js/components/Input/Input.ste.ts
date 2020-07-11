@@ -1,6 +1,9 @@
-"use strict";
+interface Window {
+  Input: string;
+}
+
 window.Input = (function () {
-    return `
+  return `
     <input
       class="input"
       {% attributes %}

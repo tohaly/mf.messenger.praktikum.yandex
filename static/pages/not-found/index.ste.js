@@ -1,12 +1,11 @@
+"use strict";
 (function () {
-  const errorTemplate = window.Error;
-
-  const data = {
-    errorCode: "Error 500",
-    errorTitle: "Problems with server",
-  };
-
-  document
-    .querySelector(".page")
-    .appendChild(new window.SimpleTemplateEngine(errorTemplate).getNode(data));
+    const errorTemplate = window.ErrorTmpl;
+    const data = {
+        errorCode: "Error 404",
+        errorTitle: "Not found",
+    };
+    document
+        .querySelector(".page")
+        .appendChild(new window.SimpleTemplateEngine(errorTemplate).getNode(data));
 })();

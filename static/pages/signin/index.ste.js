@@ -1,32 +1,30 @@
+"use strict";
 (function () {
-  const headerTemplate = window.Header;
-  const titleTemplate = window.Title;
-  const inputTemplate = window.Input;
-  const buttonTemplate = window.AuthButton;
-
-  const Header = new window.SimpleTemplateEngine(headerTemplate);
-  const Title = new window.SimpleTemplateEngine(titleTemplate);
-  const Input = new window.SimpleTemplateEngine(inputTemplate);
-  const Button = new window.SimpleTemplateEngine(buttonTemplate);
-
-  const { passwordValidator, simpleTextValidator } = window;
-
-  const data = {
-    title: { text: "Signin" },
-    inputs: [
-      {
-        attributes: `
+    const headerTemplate = window.Header;
+    const titleTemplate = window.Title;
+    const inputTemplate = window.Input;
+    const buttonTemplate = window.AuthButton;
+    const Header = new window.SimpleTemplateEngine(headerTemplate);
+    const Title = new window.SimpleTemplateEngine(titleTemplate);
+    const Input = new window.SimpleTemplateEngine(inputTemplate);
+    const Button = new window.SimpleTemplateEngine(buttonTemplate);
+    const { passwordValidator, simpleTextValidator } = window;
+    const data = {
+        title: { text: "Signin" },
+        inputs: [
+            {
+                attributes: `
           type="text"
           placeholder="login" 
           minlength="2"
           maxlength="20"
           required
         `,
-        name: "login",
-        handleBlur: simpleTextValidator,
-      },
-      {
-        attributes: `
+                name: "login",
+                handleBlur: simpleTextValidator,
+            },
+            {
+                attributes: `
           type="password" 
           placeholder="password" 
           pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
@@ -34,33 +32,29 @@
           autocomplete="on"
           required
         `,
-        name: "password",
-        handleBlur: passwordValidator,
-      },
-    ],
-
-    signinButton: {
-      handleClick() {
-        event.preventDefault();
-        console.log(form.getData());
-      },
-      text: "Signin",
-    },
-  };
-
-  const { inputs, signinButton, title } = data;
-
-  const inputWrappers = inputs
-    .map((item) => {
-      return `
+                name: "password",
+                handleBlur: passwordValidator,
+            },
+        ],
+        signinButton: {
+            handleClick() {
+                event.preventDefault();
+                console.log(form.getData());
+            },
+            text: "Signin",
+        },
+    };
+    const { inputs, signinButton, title } = data;
+    const inputWrappers = inputs
+        .map((item) => {
+        return `
         <div class="form__input-wrapper">
           ${Input.compile(item, "auth__input")}           
           <span class="auth__error">Failed required</span>
         </div>`;
     })
-    .join("\n");
-
-  const SignInPageTemplate = `
+        .join("\n");
+    const SignInPageTemplate = `
     <div class="root">
     ${Header.compile()}
     <main class="main-content">
@@ -83,23 +77,17 @@
     </main>
     </div>
 `;
-
-  document
-    .querySelector(".page")
-    .appendChild(
-      new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data)
-    );
-
-  const formContainer = document.querySelector("form");
-  const inputsContainer = formContainer.querySelectorAll("input");
-  const formButton = document.querySelector(".auth__button");
-
-  const form = new window.Form(formContainer, formButton);
-  formContainer.addEventListener("input", form.formIsValid);
-
-  inputsContainer.forEach((element, i) => {
-    const input = new window.InputValidate(element, inputs[i].handleBlur);
-    element.addEventListener("focus", input.handleFocus);
-    element.addEventListener("blur", input.handleBlur);
-  });
+    document
+        .querySelector(".page")
+        .appendChild(new window.SimpleTemplateEngine(SignInPageTemplate).getNode(data));
+    const formContainer = document.querySelector("form");
+    const inputsContainer = formContainer.querySelectorAll("input");
+    const formButton = document.querySelector(".auth__button");
+    const form = new window.Form(formContainer, formButton);
+    formContainer.addEventListener("input", form.formIsValid);
+    inputsContainer.forEach((element, i) => {
+        const input = new window.InputValidate(element, inputs[i].handleBlur);
+        element.addEventListener("focus", input.handleFocus);
+        element.addEventListener("blur", input.handleBlur);
+    });
 })();

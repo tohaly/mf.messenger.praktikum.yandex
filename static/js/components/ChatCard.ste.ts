@@ -1,6 +1,9 @@
-"use strict";
+interface Window {
+  ChatCard: string;
+}
+
 window.ChatCard = (function () {
-    return `
+  return `
   <div class="chat-card" onClick="{% activateHandle %}">
     {% Avatar %}
     <div class="chat-card__content">
