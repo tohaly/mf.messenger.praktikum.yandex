@@ -4,7 +4,8 @@
     "removeComments": true,
     "strict": true,
     "noImplicitThis": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "module": "ES6"
   },
   "include": ["./static/**/*"],
   "exclude": ["node_modules"]

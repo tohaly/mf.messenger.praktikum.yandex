@@ -5,13 +5,7 @@ const PASSWORD_NUMBER = "Password must contain at least one number";
 const INCORRECT_TEXT = "Login must be from 2 to 20 characters";
 const INCORRECT_EMAIL = "Incorrect email";
 
-interface Window {
-  passwordValidator(element: HTMLInputElement, callback: Function): void;
-  simpleTextValidator(element: HTMLInputElement, callback: Function): void;
-  emailValidator(element: HTMLInputElement, callback: Function): void;
-}
-
-window.passwordValidator = (element, callback) => {
+const passwordValidator = (element, callback) => {
   if (element.validity.tooShort) {
     callback(true, TO_SHORT_PASSWORD);
     return;
@@ -40,16 +34,18 @@ window.passwordValidator = (element, callback) => {
   }
 };
 
-window.simpleTextValidator = (element, callback) => {
+const simpleTextValidator = (element, callback) => {
   if (element.validity.tooLong || element.validity.tooShort) {
     callback(true, INCORRECT_TEXT);
     return;
   }
 };
 
-window.emailValidator = (element, callback) => {
+const emailValidator = (element, callback) => {
   if (!element.validity.valid) {
     callback(true, INCORRECT_EMAIL);
     return;
   }
 };
+
+export { passwordValidator, simpleTextValidator, emailValidator };

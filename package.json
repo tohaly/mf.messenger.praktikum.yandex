@@ -4,9 +4,16 @@
   "description": "Клиент мессенджера позволяющий обмениваться сообщениями.",
   "main": "app.js",
   "dependencies": {
-    "express": "4.17.1"
+    "autoprefixer": "^9.8.5",
+    "express": "4.17.1",
+    "postcss": "^6.0.23",
+    "postcss-clean": "^1.1.0",
+    "postcss-cli": "^7.1.1",
+    "postcss-cli-simple": "^3.1.0",
+    "postcss-import": "^12.0.1"
   },
   "devDependencies": {
+    "cssnano": "^4.1.10",
     "nodemon": "^2.0.4"
   },
   "scripts": {

@@ -2,6 +2,7 @@
 @import url("./__logo-img/header__logo-img.css");
 @import url("./__logo-link/header__logo-link.css");
 @import url("./__title/header__title.css");
+@import url("./__button/header__button.css");
 
 .header {
   display: flex;
@@ -9,4 +10,5 @@
   font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
   padding: 20px 40px;
   align-items: center;
+  justify-content: space-between;
 }
