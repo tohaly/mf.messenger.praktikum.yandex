@@ -111,7 +111,7 @@ const inputsProps = [
 const data = {
   title: new Title({ text: "User settings" }),
   avatar: new Avatar({
-    link: "../../images/example-user-img.jpg",
+    link: "./images/example-user-img.jpg",
     alt: "User avatar",
     className: "auth-user-settings__img",
   }),

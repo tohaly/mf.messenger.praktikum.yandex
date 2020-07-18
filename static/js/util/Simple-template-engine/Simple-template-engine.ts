@@ -8,18 +8,13 @@ interface ISimpleTemplateEngine {
   _template: string;
 
   compile(ctx?: objectKeyStringNumber, className?: string): string;
-  addClassName(tmpl: string, className?: string): string;
   _compileTemplate(ctx?: objectKeyStringNumber): string;
   get(
     obj: objectKeyStringNumber,
     path: string,
     defaultValue?: string | boolean | Function
   ): string | boolean | Function;
-  getNode(
-    ctx: objectKeyStringNumber,
-    className?: string
-  ): ChildNode | HTMLElement;
-  eachOf(ctx: objectKeyStringNumber, length: number): string;
+  getNode(ctx: objectKeyStringNumber): ChildNode | HTMLElement;
 }
 
 class SimpleTemplateEngine implements ISimpleTemplateEngine {
@@ -31,33 +26,21 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
     this._template = template;
   }
 
-  compile(ctx?: objectKeyStringNumber, className?: string): string {
+  compile(ctx?: objectKeyStringNumber): string {
     let html = this._compileTemplate(ctx);
-    if (className) {
-      html = this.addClassName(html, className);
-    }
     return html;
-  }
-
-  addClassName(tmpl: string, className?: string): string {
-    const rexp: RegExp = /\<.{1,}\s+class="/i;
-    const matches = tmpl.match(rexp);
-
-    return matches ? tmpl.replace(rexp, `${matches[0]}${className} `) : "";
   }
 
   _compileTemplate(ctx: objectKeyStringNumber) {
     let tmpl = this._template;
     let key = null;
     const regExp = this._TEMPLATE_REGEXP;
-    const random = String(Math.random() * 100);
 
     while ((key = regExp.exec(tmpl))) {
       if (key[1]) {
         const tmplValue: any = key[1].trim();
         const data: any = this.get(ctx, tmplValue);
         if (typeof data === "function") {
-          console.log(tmplValue);
           const randomName: any = `${tmplValue}${`${
             Math.random() * 100
           }`.replace(".", "")}`;
@@ -97,27 +80,12 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
     return result || defaultValue;
   }
 
-  getNode(ctx: objectKeyStringNumber, className?: string): HTMLElement {
+  getNode(ctx?: objectKeyStringNumber): HTMLElement {
     const element: HTMLElement = document.createElement("div");
 
-    element.insertAdjacentHTML(
-      "beforeend",
-      this.compile(ctx, className).trim()
-    );
+    element.insertAdjacentHTML("beforeend", this.compile(ctx).trim());
 
     return element;
-  }
-
-  eachOf(ctx: objectKeyStringNumber, length: number): string {
-    let html = "";
-    if (length) {
-      window.range(length).forEach(() => {
-        html = `${html}
-        ${this.compile(ctx)}      
-        `;
-      });
-    }
-    return html;
   }
 }
 

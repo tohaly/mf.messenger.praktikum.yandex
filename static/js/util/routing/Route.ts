@@ -1,4 +1,4 @@
-import { isEqual } from "../isEqual.js";
+import { isEqual } from "../isEqual/isEqual.js";
 import { render } from "../render.js";
 import { IBlock } from "../Block/Block.js";
 

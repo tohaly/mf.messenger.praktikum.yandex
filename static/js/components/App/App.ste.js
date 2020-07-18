@@ -1,17 +1,13 @@
 import { Block } from "../../util/Block/Block.js";
 import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine.js";
 import router from "../../router.js";
-import { MainPage } from "../../pages/MainPage/index.ste.js";
-import { SigninPage } from "../../pages/SigninPage/index.ste.js";
-import { SignupPage } from "../../pages/SignupPage/index.ste.js";
-import { UserSettings } from "../../pages/UserSettings/index.ste.js";
 import { Button } from "../Header/HeaderButton/ButtonHeader.js";
 import { Header } from "../Header/Header.ste.js";
 const template = `
   {% header %}
   <main id="main-content"></main>
 `;
-const app = new SimpleTemplateEngine(template);
+const appTemplate = new SimpleTemplateEngine(template);
 const headerClickEvents = (event) => {
     if (event.target.classList.contains("header__button")) {
         event.preventDefault();
@@ -60,16 +56,10 @@ class App extends Block {
         this.eventBus().on(this.EVENTS.FLOW_RENDER, () => { });
     }
     render() {
-        return app.compile({
+        return appTemplate.compile({
             header: this.props.header.render(),
         });
     }
 }
-const appPage = new App(data);
-document.querySelector("#app").appendChild(appPage.getContent());
-router
-    .use("#/", MainPage)
-    .use("#/signin", SigninPage)
-    .use("#/signup", SignupPage)
-    .use("#/settings", UserSettings)
-    .start();
+const app = new App(data);
+export { app };

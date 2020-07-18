@@ -3,11 +3,6 @@ import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-t
 
 import router from "../../router.js";
 
-import { MainPage } from "../../pages/MainPage/index.ste.js";
-import { SigninPage } from "../../pages/SigninPage/index.ste.js";
-import { SignupPage } from "../../pages/SignupPage/index.ste.js";
-import { UserSettings } from "../../pages/UserSettings/index.ste.js";
-
 import { Button } from "../Header/HeaderButton/ButtonHeader.js";
 import { Header } from "../Header/Header.ste.js";
 
@@ -16,7 +11,7 @@ const template: string = `
   <main id="main-content"></main>
 `;
 
-const app = new SimpleTemplateEngine(template);
+const appTemplate = new SimpleTemplateEngine(template);
 
 const headerClickEvents = (event: Event): void => {
   if ((<HTMLButtonElement>event.target).classList.contains("header__button")) {
@@ -75,18 +70,12 @@ class App extends Block {
   }
 
   render(): string {
-    return app.compile({
+    return appTemplate.compile({
       header: this.props.header.render(),
     });
   }
 }
 
-const appPage = new App(data);
-document.querySelector("#app").appendChild(appPage.getContent());
+const app = new App(data);
 
-router
-  .use("#/", MainPage)
-  .use("#/signin", SigninPage)
-  .use("#/signup", SignupPage)
-  .use("#/settings", UserSettings)
-  .start();
+export { app };
