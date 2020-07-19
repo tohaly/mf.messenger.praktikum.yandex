@@ -13,7 +13,7 @@ HTML, CSS, БЭМ
 ### Запуск сервера
 
 ```
-npm run dev
+npm run start
 ```
 
 ### Деплой проекта
@@ -22,6 +22,12 @@ npm run dev
 
 ```
 npm run deploy
+```
+
+### Сборка проекта
+
+```
+npm run build
 ```
 
 ## Ссылка на развернутый проект

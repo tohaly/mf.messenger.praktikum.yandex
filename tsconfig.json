@@ -7,7 +7,8 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "outDir": "dist",
-    "module": "es6"
+    "module": "es6",
+    "esModuleInterop": true
   },
   "include": ["./static/**/*"],
   "exclude": ["node_modules", "./static/**/*.test.ts"]
