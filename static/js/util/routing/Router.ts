@@ -1,4 +1,4 @@
-import { Route, IRoute, blockConstructor } from "./Route.js";
+import { Route, IRoute, blockConstructor } from "./Route";
 
 interface IRouter {
   rootQuery: string;
@@ -7,6 +7,7 @@ interface IRouter {
   _currentRoute: IRoute;
   _rootQuery: string;
   __instance: IRouter;
+  _handleHashChange(): void;
   use(pathname: string, block: blockConstructor): this;
   start(): void;
   _onRoute(pathname: string): void;
@@ -35,7 +36,14 @@ class Router implements IRouter {
     this._rootQuery = rootQuery;
 
     Router.__instance = this;
+
+    window.addEventListener("hashchange", this._handleHashChange);
   }
+
+  _handleHashChange = (): void => {
+    const path = window.location.hash;
+    this._onRoute(path);
+  };
 
   use(pathname: string, block: blockConstructor): this {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery });

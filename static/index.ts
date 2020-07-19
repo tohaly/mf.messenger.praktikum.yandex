@@ -1,9 +1,14 @@
-import router from "./js/router.js";
-import { app } from "./js/components/App/App.ste.js";
-import { MainPage } from "./js/pages/MainPage/index.ste.js";
-import { SigninPage } from "./js/pages/SigninPage/index.ste.js";
-import { SignupPage } from "./js/pages/SignupPage/index.ste.js";
-import { UserSettings } from "./js/pages/UserSettings/index.ste.js";
+import router from "./js/router";
+import { app } from "./js/components/App/App";
+
+import {
+  ServerError,
+  NotFound,
+  MainPage,
+  SigninPage,
+  SignupPage,
+  UserSettings,
+} from "./js/pages/index";
 
 document.querySelector("#app").appendChild(app.getContent());
 
@@ -12,4 +17,6 @@ router
   .use("#/signin", SigninPage)
   .use("#/signup", SignupPage)
   .use("#/settings", UserSettings)
+  .use("#/error", ServerError)
+  .use("#/notfound", NotFound)
   .start();

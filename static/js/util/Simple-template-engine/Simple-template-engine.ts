@@ -41,13 +41,10 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
         const tmplValue: any = key[1].trim();
         const data: any = this.get(ctx, tmplValue);
         if (typeof data === "function") {
-          const randomName: any = `${tmplValue}${`${
-            Math.random() * 100
-          }`.replace(".", "")}`;
-          window[randomName] = data;
+          window[tmplValue] = data;
           tmpl = tmpl.replace(
             new RegExp(key[0], "gi"),
-            `window.${randomName.trim()}()`
+            `window.${tmplValue}()`
           );
 
           const keyCtx = this._REGEXP_CTX.exec(tmpl);
@@ -85,7 +82,7 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
 
     element.insertAdjacentHTML("beforeend", this.compile(ctx).trim());
 
-    return element;
+    return element.firstChild as HTMLElement;
   }
 }
 

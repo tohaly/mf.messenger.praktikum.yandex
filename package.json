@@ -11,6 +11,9 @@
     "cssnano": "^4.1.10",
     "jest": "^26.1.0",
     "nodemon": "^2.0.4",
+    "path": "^0.12.7",
+    "postcss-cli": "^7.1.1",
+    "postcss-import": "^12.0.1",
     "ts-jest": "^26.1.3",
     "typescript": "^3.9.7"
   },
@@ -18,7 +21,7 @@
     "dev": "nodemon --watch app.js --watch ./static",
     "deploy": "git checkout deploy & git merge master & git push & git checkout master",
     "test": "jest",
-    "build": "rimraf dist && mkdir dist && cp static/index.html dist && cp -r static/images dist && cp -r static/vendor dist && postcss static/index.css -o dist/index.css && tsc"
+    "build": "rimraf dist && mkdir dist && cp static/index.html dist && cp -r static/images dist && cp -r static/vendor dist && postcss static/index.css -o dist/index.css && tsc &&  node fixImportExtentions.js"
   },
   "repository": {
     "type": "git",

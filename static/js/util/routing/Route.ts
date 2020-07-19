@@ -1,6 +1,6 @@
-import { isEqual } from "../isEqual/isEqual.js";
-import { render } from "../render.js";
-import { IBlock } from "../Block/Block.js";
+import { isEqual } from "../isEqual/isEqual";
+import { render } from "../render";
+import { IBlock } from "../Block/Block";
 
 type routeProps = { rootQuery: string };
 type blockConstructor = new (

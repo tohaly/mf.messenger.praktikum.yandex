@@ -39,9 +39,8 @@ const mainPageTemplate: string = `
                   type="text"
                   class="input control-panel__input"
                   placeholder="Start to write..."
-                  onInput="{% handleInput %}(% bind(this, this) %)"
                 />
-                <button class="control-panel__send-button" onClick={% handleClickButton %}></button>
+                <button class="control-panel__send-button"></button>
               </form>
               <div class="control-panel__media">
                 <div

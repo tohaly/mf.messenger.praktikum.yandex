@@ -1,4 +1,4 @@
-import { EventBus, IEventBus } from "../Event-bus/Event-bus.js";
+import { EventBus, IEventBus } from "../Event-bus/Event-bus";
 
 type propsObject = {
   [key: string]: any;
