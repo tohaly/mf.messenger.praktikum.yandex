@@ -1,8 +1,4 @@
 .auth-user-settings__img {
-  max-width: 400px;
-  width: auto;
-  height: 100%;
-  align-self: stretch;
-  margin-right: 32px;
+  max-width: 300px;
   object-fit: cover;
 }

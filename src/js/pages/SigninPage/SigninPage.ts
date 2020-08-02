@@ -1,7 +1,7 @@
 import { Block } from "../../util/Block/Block";
 import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
 import router from "../../router";
-import { AuthApi } from "../../API/auth-api";
+import { auth } from "../../../index";
 
 import template from "./signin-template";
 import { inputsProps } from "./inputProps";
@@ -15,7 +15,6 @@ import { Title, Input, Button, ServerError } from "../../components/index";
 import { Form, IForm } from "../../form";
 
 const signinPageTemplate = new SimpleTemplateEngine(template);
-const auth = new AuthApi("/auth/");
 
 interface IInputsProp {
   attributes: string;

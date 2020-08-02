@@ -9,18 +9,30 @@ import {
   MainPage,
   SigninPage,
   SignupPage,
-  // UserSettings,
+  UserSettings,
 } from "./js/pages/index";
 
 export const auth = new AuthApi("/auth/");
 
 document.querySelector("#header").appendChild(new Header().getContent());
 
+fetch("https://ya-praktikum.tech/api/v2/auth/signin", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  credentials: "include",
+  body: JSON.stringify({
+    login: "tohalb",
+    password: "hgfrd26Y1",
+  }),
+}).then((res) => console.log(res));
+
 router
   .useProtect("#/", MainPage)
   .useDefault("#/signin", SigninPage)
   .use("#/signup", SignupPage)
-  // .use("#/settings", UserSettings)
+  .use("#/settings", UserSettings)
   .use("#/error", ServerError)
   .use("#/notfound", NotFound)
   .start();

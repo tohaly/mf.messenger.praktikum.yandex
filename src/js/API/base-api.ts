@@ -15,7 +15,8 @@ abstract class BaseAPI implements IBaseAPI {
   }
   getResponse(res: XMLHttpRequest) {
     if (res.status === 200) {
-      return res;
+      console.log(res);
+      return;
     }
     throw new Error(res.response);
   }

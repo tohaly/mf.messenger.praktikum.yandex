@@ -14,11 +14,12 @@ class Input extends Block {
   }
 
   render(): string {
-    const { attributes, name, className, value } = this.props;
+    const { attributes, name, className = "", value } = this.props;
     return input.compile({
       attributes,
       name,
       value,
+      className,
     });
   }
 }
