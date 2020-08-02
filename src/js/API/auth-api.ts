@@ -13,13 +13,12 @@ class AuthApi extends BaseAPI {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
       body,
     };
     const route = "signup";
 
     return this._http
-      .request(this._url + route, options)
+      .post(this._url + route, options)
       .then((res: any) => this.getResponse(res));
   }
 
@@ -28,13 +27,12 @@ class AuthApi extends BaseAPI {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
       body,
     };
     const route = "signin";
 
     return this._http
-      .request(this._url + route, options)
+      .post(this._url + route, options)
       .then((res: any) => this.getResponse(res));
   }
 
@@ -44,12 +42,18 @@ class AuthApi extends BaseAPI {
         "Content-Type": "application/json",
       },
       method: "POST",
-      // body: {},
     };
     const route = "logout";
 
     return this._http
       .request(this._url + route, options)
+      .then((res: any) => this.getResponse(res));
+  }
+
+  getUserInfo() {
+    const route = "user";
+    return this._http
+      .get(this._url + route)
       .then((res: any) => this.getResponse(res));
   }
 }

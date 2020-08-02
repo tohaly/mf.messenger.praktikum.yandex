@@ -1,7 +1,7 @@
 type headersStringKey = { [key: string]: string };
 type deepObject = { [key: string]: string | deepObject };
 type modeType = "same-origin" | "no-cors" | "cors";
-type credentialsType = "omit" | "same-origin" | "include";
+// type credentialsType = "omit" | "same-origin" | "include";
 type cacheType =
   | "default»"
   | "no-store"
@@ -15,7 +15,7 @@ interface IOptions {
   method?: string;
   body?: any;
   mode?: modeType;
-  credentials?: credentialsType;
+  credentials?: string;
   cache?: cacheType;
   timeout?: number;
 }
@@ -88,6 +88,7 @@ class HTTP implements IHTTP {
         }
 
         const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
         const isGet = method === this.METHODS.GET;
 
         xhr.open(
@@ -98,7 +99,6 @@ class HTTP implements IHTTP {
         Object.keys(headers).forEach((key) => {
           xhr.setRequestHeader(key, headers[key]);
         });
-
         xhr.onload = () => resolve(xhr);
         xhr.onabort = reject;
         xhr.onerror = reject;

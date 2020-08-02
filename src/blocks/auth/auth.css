@@ -15,3 +15,13 @@
   flex-direction: column;
   position: relative;
 }
+
+.auth_user-settings {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.auth_right-margin {
+  margin-right: 36px;
+}

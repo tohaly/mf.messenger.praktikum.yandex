@@ -1,110 +1,31 @@
-// import { Block } from "../../util/Block/Block";
-// import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
-// import {
-//   passwordValidator,
-//   simpleTextValidator,
-//   emailValidator,
-// } from "../../util/validators";
+import { Block } from "../../util/Block/Block";
+import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
+import template from "./user-settings-template";
+import {
+  Title,
+  Input,
+  Button,
+  Avatar,
+  ServerError,
+} from "../../components/index";
+import { inputsProps } from "./inputsProps";
+import { auth } from "../../../index";
 
-// import template from "./user-settings-template";
+import AVATAR_BIG from "../../../../static/images/example-user-img.jpg";
 
-// import { Title, Input, Button, Avatar } from "../../components/index";
+import { Form, IForm } from "../../form";
+import {
+  InputValidate,
+  IInputValidate,
+} from "../../components/Input/InputValidate";
 
-// import AVATAR_BIG from "../../../../static/images/example-user-img.jpg";
+interface IInputsProp {
+  attributes: string;
+  name: string;
+  handleBlur(element: HTMLInputElement, callback: Function): void;
+}
 
-// import { Form, IForm } from "../../form";
-// import {
-//   InputValidate,
-//   IInputValidate,
-// } from "../../components/Input/InputValidate";
-
-// const userSettingsTemplatePage = new SimpleTemplateEngine(template);
-// let form: IForm;
-// const validate: IInputValidate[] = [];
-
-// const inputsProps = [
-//   {
-//     attributes: `
-//         type="text"
-//         placeholder="name"
-//         minlength="2"
-//         maxlength="20"
-//         required
-//       `,
-//     name: "name",
-//     handleBlur: simpleTextValidator,
-//   },
-//   {
-//     attributes: `
-//         type="text"
-//         placeholder="login"
-//         minlength="2"
-//         maxlength="20"
-//         required
-//       `,
-//     name: "login",
-//     handleBlur: simpleTextValidator,
-//   },
-//   {
-//     attributes: `
-//         type="email"
-//         placeholder="email"
-//         pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
-//         required
-//         `,
-//     name: "email",
-//     handleBlur: emailValidator,
-//   },
-//   {
-//     attributes: `
-//         type="password"
-//         placeholder="old password"
-//         pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-//         minlength="8"
-//         autocomplete="on"
-//         required
-//       `,
-//     name: "old-password",
-//     handleBlur: passwordValidator,
-//   },
-//   {
-//     attributes: `
-//         type="password"
-//         placeholder="new password"
-//         pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-//         minlength="8"
-//         autocomplete="on"
-//         required
-//       `,
-//     name: "new-password",
-//     handleBlur(element: HTMLInputElement, callback: Function) {
-//       const PASSWORD_COINCIDES = "Same as old password";
-//       passwordValidator(element, callback);
-//       if (element.value === form.virtualForm["old-password"]) {
-//         callback(true, PASSWORD_COINCIDES);
-//         return;
-//       }
-//     },
-//   },
-//   {
-//     attributes: `
-//         type="password"
-//         placeholder="repeat password"
-//         pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-//         minlength="8"
-//         autocomplete="on"
-//         required
-//       `,
-//     name: "repeat-password",
-//     handleBlur(element: HTMLInputElement, callback: Function) {
-//       const PASSWORD_MISMATCH = "Passwords mismatch";
-//       if (element.value !== form.virtualForm["new-password"]) {
-//         callback(true, PASSWORD_MISMATCH);
-//         return;
-//       }
-//     },
-//   },
-// ];
+const userSettingsTemplatePage = new SimpleTemplateEngine(template);
 
 // const data = {
 //   title: new Title({ text: "User settings" }),
@@ -127,60 +48,147 @@
 //     className: "button auth__button auth-user-settings__button",
 //     handleClick() {
 //       event.preventDefault();
-//       console.log(form.getData());
+//       // console.log(form.getData());
 //     },
 //   }),
 // };
 
-// class UserSettings extends Block {
-//   constructor() {
-//     super("div", data);
-//   }
+class UserSettings extends Block {
+  inputsValue: { [key: string]: string };
+  validate: IInputValidate[];
+  form: IForm;
+  constructor() {
+    super("div", {
+      title: new Title({ text: "Signup" }).render(),
+      avatar: new Avatar({
+        link: AVATAR_BIG,
+        alt: "User avatar",
+        className: "auth-user-settings__img",
+      }).render(),
+      // serverError: new ServerError({
+      //   text: "",
+      // }),
+      inputAvatar: new Input({
+        attributes: inputsProps.avatar[0].attributes,
+        name: inputsProps.avatar[0].name,
+        className: "auth__input auth__input_avatar",
+      }).render(),
+      buttonAvatar: new Button({
+        text: "Load avatar",
+        className: "auth__button auth__button_avatar",
+        isDisabled: false,
+      }).render(),
+      buttonUserInfo: new Button({
+        text: "Save user info",
+        className: "auth__button auth__button_user-setting",
+        isDisabled: false,
+      }).render(),
+      buttonPassword: new Button({
+        text: "Change",
+        className: "auth__button auth__button_password",
+        isDisabled: false,
+      }).render(),
+      isLoad: false,
+    });
 
-//   customFormValidate() {
-//     const { virtualForm } = form;
+    this.inputsValue;
+    this.validate = [];
+    this.form;
+  }
 
-//     if (virtualForm["new-password"] !== virtualForm["repeat-password"])
-//       return false;
-//     if (virtualForm["old-password"] === virtualForm["new-password"])
-//       return false;
-//     return true;
-//   }
+  getUserInfoInputs() {
+    this.inputsValue = this.inputsValue || {};
+    this.validate = this.validate || [];
+    return (inputsProps.userInfo as IInputsProp[])
+      .map((item) => {
+        const { name, attributes } = item;
+        const value = this.inputsValue[name]
+          ? `value="${this.inputsValue[name]}"`
+          : " ";
+        this.validate.push(new InputValidate(item.handleBlur));
 
-//   getFormData() {
-//     event.preventDefault();
-//     console.log(form.getData());
-//   }
+        return new Input({
+          attributes,
+          name,
+          value,
+        }).render();
+      })
+      .join("");
+  }
 
-//   componentDidMount() {
-//     this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
-//       const { element } = this;
-//       const formContainer = element.querySelector("form");
-//       const inputs = element.querySelectorAll(".input");
-//       const formButton: HTMLButtonElement = element.querySelector(
-//         ".auth-user-settings__button"
-//       );
+  getPasswordInputs() {
+    this.inputsValue = this.inputsValue || {};
+    this.validate = this.validate || [];
+    return (inputsProps.password as IInputsProp[])
+      .map((item) => {
+        const { name, attributes } = item;
+        const value = this.inputsValue[name]
+          ? `value="${this.inputsValue[name]}"`
+          : " ";
+        this.validate.push(new InputValidate(item.handleBlur));
 
-//       form = new Form(formContainer, formButton, this.customFormValidate);
+        return new Input({
+          attributes,
+          name,
+          value,
+        }).render();
+      })
+      .join("");
+  }
 
-//       inputs.forEach((input, i) => {
-//         (input as HTMLInputElement).onfocus = validate[i].handleFocus;
-//         (input as HTMLInputElement).onblur = validate[i].handleBlur;
-//       });
+  customFormValidate() {
+    // const { virtualForm } = form;
+    // if (virtualForm["new-password"] !== virtualForm["repeat-password"])
+    //   return false;
+    // if (virtualForm["old-password"] === virtualForm["new-password"])
+    //   return false;
+    // return true;
+  }
 
-//       formContainer.oninput = form.formIsValid;
-//       formButton.onclick = this.getFormData;
-//     });
-//   }
+  getFormData() {
+    // event.preventDefault();
+    // console.log(form.getData());
+  }
 
-//   render(): string {
-//     return userSettingsTemplatePage.compile({
-//       title: this.props.title.render(),
-//       avatar: this.props.avatar.render(),
-//       inputs: this.props.inputs.map((item: any) => item.render()).join(""),
-//       button: this.props.button.render(),
-//     });
-//   }
-// }
+  componentDidMount() {
+    auth.getUserInfo().then((res) => console.log(res));
+    // this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
+    //   const { element } = this;
+    //   const formContainer = element.querySelector("form");
+    //   const inputs = element.querySelectorAll(".input");
+    //   const formButton: HTMLButtonElement = element.querySelector(
+    //     ".auth-user-settings__button"
+    //   );
+    //   // form = new Form(formContainer, formButton, this.customFormValidate);
+    //   inputs.forEach((input, i) => {
+    //     (input as HTMLInputElement).onfocus = validate[i].handleFocus;
+    //     (input as HTMLInputElement).onblur = validate[i].handleBlur;
+    //   });
+    //   // formContainer.oninput = form.formIsValid;
+    //   formButton.onclick = this.getFormData;
+    // });
+  }
 
-// export { UserSettings };
+  render(): string {
+    const {
+      title,
+      avatar,
+      inputAvatar,
+      buttonAvatar,
+      buttonUserInfo,
+      buttonPassword,
+    } = this.props;
+    return userSettingsTemplatePage.compile({
+      title,
+      avatar,
+      inputAvatar,
+      buttonAvatar,
+      inputsUserInfo: this.getUserInfoInputs(),
+      buttonUserInfo,
+      inputsUserPassword: this.getPasswordInputs(),
+      buttonPassword,
+    });
+  }
+}
+
+export { UserSettings };
