@@ -1,0 +1,11 @@
+.auth__button {
+  margin-bottom: 26px;
+}
+
+.auth__button_user-setting {
+  margin-bottom: 40px;
+}
+
+.auth__button_avatar {
+  align-self: flex-start;
+}

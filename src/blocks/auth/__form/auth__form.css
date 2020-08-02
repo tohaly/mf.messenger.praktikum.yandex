@@ -1,0 +1,8 @@
+.auth__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth__form_avatar {
+  margin-right: 36px;
+}

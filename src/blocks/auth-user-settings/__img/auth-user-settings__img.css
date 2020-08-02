@@ -1,0 +1,4 @@
+.auth-user-settings__img {
+  max-width: 300px;
+  object-fit: cover;
+}

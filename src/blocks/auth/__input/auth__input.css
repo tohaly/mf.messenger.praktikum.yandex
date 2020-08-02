@@ -1,0 +1,17 @@
+.auth__input {
+  padding: 12px 10px;
+  margin-bottom: 4px;
+  width: 100%;
+  min-width: 250px;
+}
+
+.auth__input:focus {
+  outline: none;
+  border: 1px solid #62acf3;
+}
+
+.auth__input_avatar {
+  color: #fff;
+  max-width: 300px;
+  padding: 4px 0;
+}

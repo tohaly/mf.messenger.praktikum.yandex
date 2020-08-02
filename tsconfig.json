@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+    "sourceMap": true,
     "target": "es6",
     "removeComments": true,
+    "noImplicitAny": true,
+    "allowJs": true,
     "strict": true,
     "noImplicitThis": false,
     "strictNullChecks": false,
-    "outDir": "dist",
+    "outDir": "./dist/",
     "module": "es6",
     "esModuleInterop": true
   },
-  "include": ["./static/**/*"],
-  "exclude": ["node_modules", "./static/**/*.test.ts"]
+  "include": ["./src/**/*", "src/declaration.d.ts"],
+  "exclude": ["node_modules", "./src/**/*.test.ts"]
 }
