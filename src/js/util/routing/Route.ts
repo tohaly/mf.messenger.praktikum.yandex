@@ -2,10 +2,10 @@ import { isEqual } from "../isEqual/isEqual";
 import { render } from "../render";
 import { IBlock } from "../Block/Block";
 
-type routeProps = { rootQuery: string };
+type routeProps = { [key: string]: any };
 type blockConstructor = new (
   tagName?: string,
-  props?: { [key: string]: string }
+  props?: { [key: string]: string | boolean }
 ) => IBlock;
 
 interface IRoute {

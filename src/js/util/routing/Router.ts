@@ -1,4 +1,5 @@
 import { Route, IRoute, blockConstructor } from "./Route";
+import router from "../../router";
 
 interface IRouter {
   rootQuery: string;
@@ -7,8 +8,12 @@ interface IRouter {
   _currentRoute: IRoute;
   _rootQuery: string;
   __instance: IRouter;
+  isProtect: boolean;
+  _defaultPath: string;
   _handleHashChange(): void;
   use(pathname: string, block: blockConstructor): this;
+  useDefault(pathname: string, block: blockConstructor): this;
+  useProtect(pathname: string, block: blockConstructor): this;
   start(): void;
   _onRoute(pathname: string): void;
   go(pathname: string): void;
@@ -24,6 +29,8 @@ class Router implements IRouter {
   _currentRoute: IRoute;
   _rootQuery: string;
   __instance: IRouter;
+  isProtect: boolean;
+  _defaultPath: string;
   static __instance: IRouter;
   constructor(rootQuery?: string) {
     if (Router.__instance) {
@@ -34,6 +41,8 @@ class Router implements IRouter {
     this.history = window.history;
     this._currentRoute = null;
     this._rootQuery = rootQuery;
+    this._defaultPath;
+    this.isProtect = true;
 
     Router.__instance = this;
 
@@ -51,6 +60,24 @@ class Router implements IRouter {
     return this;
   }
 
+  useDefault(pathname: string, block: blockConstructor): this {
+    const route = new Route(pathname, block, {
+      rootQuery: this._rootQuery,
+    });
+    this._defaultPath = pathname;
+    this.routes.push(route);
+    return this;
+  }
+
+  useProtect(pathname: string, block: blockConstructor): this {
+    const route = new Route(pathname, block, {
+      rootQuery: this._rootQuery,
+      protect: true,
+    });
+    this.routes.push(route);
+    return this;
+  }
+
   start(): void {
     window.onpopstate = ((event: any): void => {
       this._onRoute(event.currentTarget.location.hash);
@@ -62,6 +89,11 @@ class Router implements IRouter {
   _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
     if (!route) {
+      this.go("#/notfound");
+      return;
+    }
+    if (route._props.protect && this.isProtect) {
+      this.go(this._defaultPath);
       return;
     }
 

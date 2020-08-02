@@ -13,4 +13,5 @@
   width: 320px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }

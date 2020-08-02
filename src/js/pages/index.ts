@@ -3,7 +3,7 @@ import { NotFound } from "./ErrorPages/NotFound";
 import { MainPage } from "./MainPage/MainPage";
 import { SigninPage } from "./SigninPage/SigninPage";
 import { SignupPage } from "./SignupPage/SignupPage";
-import { UserSettings } from "./UserSettings/UserSettings";
+// import { UserSettings } from "./UserSettings/UserSettings";
 
 export {
   ServerError,
@@ -11,5 +11,5 @@ export {
   MainPage,
   SigninPage,
   SignupPage,
-  UserSettings,
+  // UserSettings,
 };

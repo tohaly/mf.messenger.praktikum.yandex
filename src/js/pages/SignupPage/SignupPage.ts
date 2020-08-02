@@ -1,113 +1,103 @@
 import { Block } from "../../util/Block/Block";
 import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
-import {
-  passwordValidator,
-  simpleTextValidator,
-  emailValidator,
-} from "../../util/validators";
-
+import { auth } from "../../../index";
 import router from "../../router";
 
 import template from "./signup-template";
-
-import { Title, Input, Button } from "../../components/index";
-
-import { Form, IForm } from "../../form";
+import { inputsProps } from "./inputProps";
 import {
   InputValidate,
   IInputValidate,
 } from "../../components/Input/InputValidate";
 
+import { Title, Input, ServerError, Button } from "../../components/index";
+
+import { Form, IForm } from "../../form";
+
+interface IInputsProp {
+  attributes: string;
+  name: string;
+  handleBlur(element: HTMLInputElement, callback: Function): void;
+}
+
 const signupTemplatePage = new SimpleTemplateEngine(template);
-let form: IForm;
-const validate: IInputValidate[] = [];
-
-const inputsProps = [
-  {
-    attributes: `
-        type="email" 
-        placeholder="email" 
-        pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
-        required
-        `,
-    name: "email",
-    handleBlur: emailValidator,
-  },
-  {
-    attributes: `
-        type="text"
-        placeholder="login" 
-        minlength="2"
-        maxlength="20"
-        required
-      `,
-    name: "login",
-    handleBlur: simpleTextValidator,
-  },
-  {
-    attributes: `
-        type="password" 
-        placeholder="password" 
-        pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-        minlength="8"
-        autocomplete="on"
-        required
-      `,
-    name: "password",
-    handleBlur: passwordValidator,
-  },
-  {
-    attributes: `
-        type="password" 
-        placeholder="repeat password" 
-        pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-        minlength="8"
-        autocomplete="on"
-        required
-      `,
-    name: "repeat-password",
-    handleBlur(element: HTMLInputElement, callback: Function) {
-      const PASSWORD_MISMATCH = "Passwords mismatch";
-      if (element.value !== form.virtualForm["password"]) {
-        callback(true, PASSWORD_MISMATCH);
-        return;
-      }
-    },
-  },
-];
-
-const data = {
-  title: new Title({ text: "Signup" }),
-  inputs: inputsProps.map((item) => {
-    validate.push(new InputValidate(item.handleBlur));
-
-    return new Input({
-      attributes: item.attributes,
-      name: item.name,
-      className: "auth__input",
-    });
-  }),
-  button: new Button({
-    text: "Signup",
-    className: "button auth__button",
-  }),
-  altText: "already have an account?",
-};
 
 class SignupPage extends Block {
+  inputsValue: { [key: string]: string };
+  validate: IInputValidate[];
+  form: IForm;
+
   constructor() {
-    super("div", data);
+    super("div", {
+      title: new Title({ text: "Signup" }),
+      serverError: new ServerError({
+        text: "",
+      }),
+      button: new Button({
+        text: "Signup",
+        className: "auth__button",
+        isDisabled: true,
+      }),
+      altLinkClassName: "auth__link_signup",
+      altText: "already have an account?",
+      isLoad: false,
+    });
+
+    this.inputsValue;
+    this.validate = [];
+    this.form;
   }
 
-  customFormValidate() {
-    if (form.virtualForm["password"] !== form.virtualForm["repeat-password"])
-      return false;
-    return true;
+  _getInputs() {
+    this.inputsValue = this.inputsValue || {};
+    this.validate = this.validate || [];
+    return (inputsProps as IInputsProp[])
+      .map((item) => {
+        const { name, attributes } = item;
+        const value = this.inputsValue[name]
+          ? `value="${this.inputsValue[name]}"`
+          : " ";
+        this.validate.push(new InputValidate(item.handleBlur));
+
+        return new Input({
+          attributes,
+          name,
+          value,
+        }).render();
+      })
+      .join("");
   }
 
-  getFormData() {
+  handleSigninClick(event: any) {
     event.preventDefault();
-    console.log(form.getData());
+    this.setProps({ isLoad: true });
+    auth
+      .signup(this.inputsValue)
+      .then(() => {
+        localStorage.setItem("login", this.inputsValue.login);
+      })
+      .then(() => {
+        this.inputsValue = {};
+      })
+      .then(() => {
+        router.go("#/");
+      })
+      .catch((err) => {
+        const { message = "Server error" } = err;
+        this.inputsValue.password = "";
+        this.setProps({
+          serverError: new ServerError({
+            text: message,
+          }),
+        });
+      })
+      .finally(() => {
+        this.setProps({ isLoad: false });
+      });
+  }
+
+  _getInputsValue(event: Event) {
+    this.form.saveValue(<HTMLInputElement>event.target, this.inputsValue);
   }
 
   goSignin() {
@@ -117,7 +107,7 @@ class SignupPage extends Block {
 
   componentDidMount() {
     this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
-      const { element } = this;
+      const { element, validate } = this;
       const formContainer = element.querySelector("form");
       const formButton: HTMLButtonElement = element.querySelector(
         ".auth__button"
@@ -127,25 +117,38 @@ class SignupPage extends Block {
         ".auth__link_signup"
       );
 
-      form = new Form(formContainer, formButton, this.customFormValidate);
-
+      this.form = new Form(formContainer, formButton);
       inputs.forEach((input, i) => {
         (input as HTMLInputElement).onfocus = validate[i].handleFocus;
         (input as HTMLInputElement).onblur = validate[i].handleBlur;
       });
-
-      formContainer.oninput = form.formIsValid;
-      formButton.onclick = this.getFormData;
+      formContainer.onchange = this._getInputsValue.bind(this);
+      formContainer.oninput = this.form.formIsValid;
+      formButton.onclick = this.handleSigninClick.bind(this);
       altButton.onclick = this.goSignin;
     });
   }
 
   render(): string {
+    const {
+      title,
+      serverError,
+      isLoad,
+      button,
+      altLinkClassName,
+      altText,
+    } = this.props;
+
+    const loaderActivateClass = isLoad ? "loader_is-active" : "";
+
     return signupTemplatePage.compile({
-      title: this.props.title.render(),
-      inputs: this.props.inputs.map((item: any) => item.render()).join(""),
-      button: this.props.button.render(),
-      altText: this.props.altText,
+      title: title.render(),
+      inputs: this._getInputs(),
+      serverError: serverError.render(),
+      button: button.render(),
+      altLinkClassName,
+      altText,
+      loaderActivateClass,
     });
   }
 }

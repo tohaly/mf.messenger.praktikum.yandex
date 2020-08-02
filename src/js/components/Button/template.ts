@@ -1,5 +1,5 @@
 const template: string = `
-    <button class="button {% className %}" disabled>{% text %}</button>
+    <button {% disabled %} class="button {% className %}" >{% text %}</button>
 `;
 
 export { template };

@@ -6,15 +6,17 @@ const signupPageTemplate: string = `
         {% title %}
         <form class="auth__form">
           {% inputs %}
-          <span class="auth__error auth__error_server"
-            >Server error</span
-          >
+          {% serverError %}
           {% button %}
-          <a href="№" class="link auth__link auth__link_signup"
+          <a href="№" class="link auth__link {% altLinkClassName %}"
             >{% altText %}</a
-          >
-        </form>
+          >          
+      </form>        
       </div>
+    </div>
+    <div class="loader {% loaderActivateClass %}">
+      <div class="loader__item"></div>
+      <p class="loader__text">Загрузка, подождите...</p>
     </div>
   </main>
   </div>

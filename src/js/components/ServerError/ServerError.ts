@@ -6,21 +6,21 @@ import {
 
 import { template } from "./template";
 
-const button = new SimpleTemplateEngine(template);
+const serverError = new SimpleTemplateEngine(template);
 
-class Button extends Block {
+class ServerError extends Block {
+  activeClass: string;
   constructor(props: objectKeyStringNumber) {
     super("div", props);
   }
 
   render(): string {
-    const { text, className, isDisabled } = this.props;
-    return button.compile({
-      text: text,
-      className: className,
-      disabled: isDisabled ? "disabled" : "",
+    const { text } = this.props;
+    return serverError.compile({
+      activeClass: text ? "auth__error_active" : "",
+      text,
     });
   }
 }
 
-export { Button };
+export { ServerError };

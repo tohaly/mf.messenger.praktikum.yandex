@@ -25,7 +25,8 @@ interface IHTTP {
   ERROR_NEED_METHOD: string;
   getDeepParams(keyName: string, object: deepObject): string;
   queryStringify(data: deepObject): string;
-  get(url: string, options?: IOptions): Promise<unknown>;
+  get(url: string, options?: IOptions): Promise<XMLHttpRequest>;
+  post(url: string, options?: IOptions): Promise<XMLHttpRequest>;
   request(url: string, options?: IOptions): Promise<unknown>;
 }
 
@@ -35,6 +36,7 @@ class HTTP implements IHTTP {
   constructor() {
     this.METHODS = {
       GET: "GET",
+      POST: "POST",
     };
     this.queryStringify = this.queryStringify.bind(this);
     this.request = this.request.bind(this);
@@ -68,11 +70,15 @@ class HTTP implements IHTTP {
     }, "");
   }
 
-  get(url: string, options: IOptions = {}): Promise<unknown> {
+  get(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: this.METHODS.GET });
   }
 
-  request(url: string, options: IOptions = {}): Promise<unknown> {
+  post(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
+    return this.request(url, { ...options, method: this.METHODS.POST });
+  }
+
+  request(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
     const { headers = {}, method, body, timeout = 5000 } = options;
     return new Promise(
       function (resolve: any, reject: any) {
@@ -98,15 +104,14 @@ class HTTP implements IHTTP {
         xhr.onerror = reject;
         xhr.timeout = timeout;
         xhr.ontimeout = reject;
-
         if (isGet || !body) {
           xhr.send();
         } else {
-          xhr.send(body);
+          xhr.send(JSON.stringify(body));
         }
       }.bind(this)
     );
   }
 }
 
-export { HTTP, IOptions };
+export { HTTP, IOptions, IHTTP };

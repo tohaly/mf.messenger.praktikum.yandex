@@ -5,7 +5,7 @@ const template: string = `
       <h1 class="header__title">Simple chat</h1>   
     </div>
     <nav class="header__menu">
-      {% buttons %}
+      {% buttons %}      
     </nav>
   </header>
 `;

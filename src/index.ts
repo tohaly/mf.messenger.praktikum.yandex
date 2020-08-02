@@ -1,6 +1,7 @@
 import "./index.css";
 import router from "./js/router";
-import { app } from "./js/components/App/App";
+import { Header } from "./js/components/";
+import { AuthApi } from "./js/API/auth-api"; // TESTING
 
 import {
   ServerError,
@@ -8,16 +9,47 @@ import {
   MainPage,
   SigninPage,
   SignupPage,
-  UserSettings,
+  // UserSettings,
 } from "./js/pages/index";
 
-document.querySelector("#app").appendChild(app.getContent());
+export const auth = new AuthApi("/auth/");
+
+document.querySelector("#header").appendChild(new Header().getContent());
 
 router
-  .use("#/", MainPage)
-  .use("#/signin", SigninPage)
+  .useProtect("#/", MainPage)
+  .useDefault("#/signin", SigninPage)
   .use("#/signup", SignupPage)
-  .use("#/settings", UserSettings)
+  // .use("#/settings", UserSettings)
   .use("#/error", ServerError)
   .use("#/notfound", NotFound)
   .start();
+
+const eventItemInserted = new Event("changeLocalStorage");
+const storageSetItem = localStorage.setItem;
+const storageRemoveItem = localStorage.removeItem;
+
+localStorage.removeItem = function () {
+  storageRemoveItem.apply(this, arguments as any);
+  document.dispatchEvent(eventItemInserted);
+};
+
+localStorage.setItem = function () {
+  console.log("do");
+  storageSetItem.apply(this, arguments as any);
+  document.dispatchEvent(eventItemInserted);
+  console.log("posle");
+};
+
+const storageHandler = function () {
+  if (!localStorage.getItem("login")) {
+    router.go("#/signin");
+    router.isProtect = true;
+    return;
+  }
+  console.log("here");
+  router.isProtect = false;
+  router.go("#/");
+};
+
+document.addEventListener("changeLocalStorage", storageHandler, false);

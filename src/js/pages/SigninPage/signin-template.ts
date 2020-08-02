@@ -5,16 +5,18 @@ const signinPageTemplate: string = `
       <div class="auth">
         {% title %}
         <form class="auth__form auth__form_signin">
-          {% inputs %}
-          <span class="auth__error auth__error_server"
-            >Server error</span
-          >
+          {% inputs %}          
+          {% serverError %}
           {% button %}
           <a href="#" class="link auth__link auth__link_signin"
             > {% altText %} </a
           >
-          </form>
+          </form>          
         </div>
+      </div>
+      <div class="loader {% loaderActivateClass %}">
+        <div class="loader__item"></div>
+        <p class="loader__text">Загрузка, подождите...</p>
       </div>
     </main>
   </div>

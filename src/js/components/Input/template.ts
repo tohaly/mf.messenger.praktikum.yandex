@@ -1,9 +1,10 @@
 const template: string = `
     <div class="form__input-wrapper">
       <input
-      class="input {% className %}"
+      class="input auth__input"
       {% attributes %}
-      name="{% name %}"     
+      name="{% name %}"
+      {% value %}     
       />
       <span class="auth__error"></span>
     </div>

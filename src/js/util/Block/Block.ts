@@ -54,6 +54,7 @@ class Block implements IBlock {
     this.eventBus = (): IEventBus => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(this.EVENTS.INIT);
+    this.setProps = this.setProps.bind(this);
   }
 
   _registerEvents(eventBus: IEventBus): void {
@@ -81,14 +82,15 @@ class Block implements IBlock {
   componentDidMount(): void {}
 
   _componentDidUpdate(oldProps: propsObject, newProps: propsObject): void {
-    const response = this.componentDidUpdate(oldProps, newProps);
+    const response = this.componentDidUpdate();
     if (!response) {
       return;
     }
     this._render();
+    this.eventBus().emit(this.EVENTS.FLOW_RENDER);
   }
 
-  componentDidUpdate(oldProps?: propsObject, newProps?: propsObject): boolean {
+  componentDidUpdate() {
     return true;
   }
 
@@ -109,9 +111,7 @@ class Block implements IBlock {
     this._element.innerHTML = block;
   }
 
-  render(): string {
-    return "";
-  }
+  render(): any {}
 
   getContent(): HTMLElement {
     return this.element;
