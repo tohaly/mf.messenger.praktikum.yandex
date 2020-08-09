@@ -1,155 +1,179 @@
-import { Block } from "../../util/Block/Block";
-import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
-import router from "../../router";
-import { auth } from "../../../index";
+import { Block } from '../../util/Block/Block';
 
-import template from "./signin-template";
-import { inputsProps } from "./inputProps";
-import {
-  InputValidate,
-  IInputValidate,
-} from "../../components/Input/InputValidate";
+import { SimpleTemplateEngine } from '../../util/Simple-template-engine/simple-template-engine';
+import { template } from './signin-template';
+import { inputsProps } from './inputProps';
 
-import { Title, Input, Button, ServerError } from "../../components/index";
+import { InputValidate, IInputValidate } from '../../components/Input/InputValidate';
+import { Form, IForm } from '../../form';
 
-import { Form, IForm } from "../../form";
+import { AuthApi } from '../../API/authApi';
+import { authorization } from '../../authorization';
+import { setLogin } from '../../util/authHelpers';
+
+import router from '../../router';
+
+import { AUTH_ERR, AlT_TEXT_SIGNIN } from '../../constants';
+
+import { Title, Input, Button, ServerMessage, Loader } from '../../components/index';
 
 const signinPageTemplate = new SimpleTemplateEngine(template);
+const authApi = new AuthApi();
 
 interface IInputsProp {
   attributes: string;
   name: string;
-  handleBlur(element: HTMLInputElement, callback: Function): void;
+  className: string;
+  handleBlur?(element: HTMLInputElement, callback: Function): void;
 }
 
 class SigninPage extends Block {
   inputsValue: { [key: string]: string };
   validate: IInputValidate[];
   form: IForm;
+  isServerMessageSet: boolean;
 
   constructor() {
-    super("div", {
-      title: new Title({ text: "Signup" }),
-      serverError: new ServerError({
-        text: "",
-      }),
+    super('div', {
+      title: new Title({ text: 'Signup' }).render(),
+      serverMessage: new ServerMessage({
+        text: '',
+      }).render(),
       button: new Button({
-        text: "Signin",
-        className: "auth__button",
+        text: 'Signin',
+        className: 'auth__button',
         isDisabled: true,
-      }),
-      altLinkClassName: "auth__link_signin",
-      altText: "don't have an account?",
+      }).render(),
+      altLinkClassName: 'auth__link_signin',
+      altText: AlT_TEXT_SIGNIN,
       isLoad: false,
     });
 
     this.inputsValue;
     this.validate = [];
     this.form;
+    this.isServerMessageSet = false;
+
+    this._clearError = this._clearError.bind(this);
   }
 
   _getInputs() {
     this.inputsValue = this.inputsValue || {};
     this.validate = this.validate || [];
     return (inputsProps as IInputsProp[])
-      .map((item) => {
-        const { name, attributes } = item;
-        const value = this.inputsValue[name]
-          ? `value="${this.inputsValue[name]}"`
-          : " ";
-        this.validate.push(new InputValidate(item.handleBlur));
+      .map(({ name, attributes, handleBlur, className }) => {
+        const value = this.inputsValue[name] ? `value="${this.inputsValue[name]}"` : ' ';
+        this.validate.push(new InputValidate(handleBlur));
 
         return new Input({
           attributes,
           name,
           value,
+          className,
         }).render();
       })
-      .join("");
+      .join('');
   }
 
   _getInputsValue() {
     this.form.saveValue(<HTMLInputElement>event.target, this.inputsValue);
   }
 
+  _setLoader(isLoad: boolean) {
+    return new Loader({ isLoad }).render();
+  }
+
+  _clearError() {
+    if (this.isServerMessageSet) {
+      this.setProps({
+        serverMessage: new ServerMessage({
+          text: '',
+          isError: false,
+        }).render(),
+      });
+    }
+    this.isServerMessageSet = false;
+  }
+
   handleSigninClick() {
     event.preventDefault();
+
     this.setProps({ isLoad: true });
-    auth
+    authApi
       .signin(this.inputsValue)
       .then(() => {
-        localStorage.setItem("login", this.inputsValue.login);
+        setLogin(authorization, this.inputsValue.login);
       })
       .then(() => {
-        this.inputsValue = {};
-      })
-      .then(() => {
-        router.go("#/");
+        router.go('#/');
       })
       .catch((err) => {
-        const { message = "Server error" } = err;
-        this.inputsValue.password = "";
+        const { status, responseText = AUTH_ERR } = err;
+
+        if (status === 500) {
+          router.go('#/error');
+        }
+
         this.setProps({
-          serverError: new ServerError({
-            text: message,
-          }),
+          serverMessage: new ServerMessage({
+            text: responseText,
+            isError: true,
+          }).render(),
         });
+
+        this.isServerMessageSet = true;
       })
       .finally(() => {
+        this.inputsValue = {};
         this.setProps({ isLoad: false });
       });
   }
 
   goSignup() {
     event.preventDefault();
-    router.go("#/signup");
+    router.go('#/signup');
+  }
+
+  show() {
+    super.show();
+    this._clearError();
+    this.eventBus().emit(this.EVENTS.FLOW_CDU);
   }
 
   componentDidMount() {
     this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
-      const { element, validate } = this;
-      const formContainer = element.querySelector("form");
-      const formButton: HTMLButtonElement = element.querySelector(
-        ".auth__button"
-      );
-      const inputs = element.querySelectorAll(".input");
-      const altButton: HTMLButtonElement = element.querySelector(
-        ".auth__link_signin"
-      );
+      const { element, validate, _clearError, _getInputsValue, handleSigninClick, goSignup } = this;
+
+      const formContainer = element.querySelector('form');
+      const formButton: HTMLButtonElement = element.querySelector('.auth__button');
+      const inputs = element.querySelectorAll('.input');
+      const altButton: HTMLButtonElement = element.querySelector('.auth__link_signin');
 
       this.form = new Form(formContainer, formButton);
+
       inputs.forEach((input, i) => {
         (input as HTMLInputElement).onfocus = validate[i].handleFocus;
         (input as HTMLInputElement).onblur = validate[i].handleBlur;
+        (input as HTMLInputElement).onclick = _clearError;
       });
 
-      formContainer.onchange = this._getInputsValue.bind(this);
+      formContainer.onchange = _getInputsValue.bind(this);
       formContainer.oninput = this.form.formIsValid;
-      formButton.onclick = this.handleSigninClick.bind(this);
-      altButton.onclick = this.goSignup;
+      formButton.onclick = handleSigninClick.bind(this);
+      altButton.onclick = goSignup;
     });
   }
 
   render(): string {
-    const {
+    const { title, serverMessage, isLoad, button, altLinkClassName, altText } = this.props;
+    return signinPageTemplate.compile({
       title,
-      serverError,
-      isLoad,
+      inputs: this._getInputs(),
+      serverMessage,
       button,
       altLinkClassName,
       altText,
-    } = this.props;
-
-    const loaderActivateClass = isLoad ? "loader_is-active" : "";
-
-    return signinPageTemplate.compile({
-      title: title.render(),
-      inputs: this._getInputs(),
-      serverError: serverError.render(),
-      button: button.render(),
-      altLinkClassName,
-      altText,
-      loaderActivateClass,
+      loader: this._setLoader(isLoad),
     });
   }
 }

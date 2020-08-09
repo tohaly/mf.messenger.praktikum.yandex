@@ -1,6 +1,6 @@
-import { isEqual } from "../isEqual/isEqual";
-import { render } from "../render";
-import { IBlock } from "../Block/Block";
+import { isEqual } from '../isEqual/isEqual';
+import { render } from '../render';
+import { IBlock } from '../Block/Block';
 
 type routeProps = { [key: string]: any };
 type blockConstructor = new (

@@ -5,7 +5,7 @@ interface IForm {
   _button: Element;
   _customValidator(): boolean;
   _toggleButton(isActive: boolean): void;
-  formIsValid(event: Event): void;
+  formIsValid(): void;
   saveValue(event: HTMLInputElement, obj: objectKyString): void;
 }
 
@@ -14,11 +14,7 @@ class Form implements IForm {
   _button: Element;
   _customValidator: () => boolean;
 
-  constructor(
-    form: HTMLFormElement,
-    button: Element,
-    customValidator = (): boolean => true
-  ) {
+  constructor(form: HTMLFormElement, button: Element, customValidator = (): boolean => true) {
     this._form = form;
     this._button = button;
     this._customValidator = customValidator;
@@ -30,13 +26,13 @@ class Form implements IForm {
 
   _toggleButton(isActive: boolean): void {
     if (isActive) {
-      this._button.removeAttribute("disabled");
+      this._button.removeAttribute('disabled');
     } else {
-      this._button.setAttribute("disabled", "true");
+      this._button.setAttribute('disabled', 'true');
     }
   }
 
-  formIsValid = (event: Event): void => {
+  formIsValid = (): void => {
     if (this._form.checkValidity() && this._customValidator()) {
       this._toggleButton(true);
       return;

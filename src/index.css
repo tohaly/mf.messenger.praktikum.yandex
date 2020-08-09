@@ -5,7 +5,11 @@
 @import url("./blocks/button/button.css");
 @import url("./blocks/header/header.css");
 @import url("./blocks/main-content/main-content.css");
+
+/* aside-panel */
 @import url("./blocks/aside-panel/aside-panel.css");
+@import url("./blocks/aside-panel/__empty/aside-panel__empty.css");
+
 @import url("./blocks/chat-card/chat-card.css");
 @import url("./blocks/messages-window/messages-window.css");
 @import url("./blocks/message/message.css");
@@ -15,7 +19,13 @@
 @import url("./blocks/footer/footer.css");
 @import url("./blocks/error/error.css");
 @import url("./blocks/page-title/page-title.css");
+
+/* auth */
 @import url("./blocks/auth/auth.css");
+@import url("./blocks/auth/__server-message/auth__server-message.css");
+@import url("./blocks/auth/__server-message/_show/auth__server-message_show_err.css");
+@import url("./blocks/auth/__server-message/_show/auth__server-message_show_message.css");
+
 @import url("./blocks/link/link.css");
 @import url("./blocks/auth-user-settings/auth-user-settings.css");
 @import url("./blocks/input/input.css");
@@ -27,3 +37,10 @@
 @import url("./blocks/loader/__text/loader__text.css");
 
 @import url("./blocks/auth-with-container/auth-with-container.css");
+
+/* popup */
+
+@import url("./blocks/popup/popup.css");
+@import url("./blocks/popup/_is-active/popup_is-open.css");
+@import url("./blocks/popup/__content/popup__content.css");
+@import url("./blocks/popup/__input/popup__input.css");

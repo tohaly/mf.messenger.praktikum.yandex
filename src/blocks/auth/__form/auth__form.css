@@ -6,3 +6,9 @@
 .auth__form_avatar {
   margin-right: 36px;
 }
+
+.auth__form_signup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 32px;
+}

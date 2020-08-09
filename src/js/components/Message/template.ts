@@ -1,15 +1,18 @@
-const template: string = `
-  <div class="message">
-    {% avatar %}
+const template = `
+  <div class="
+    message 
+    {% className %}"
+    >
+      {% avatar %}
     <div class="message__content">
-      <h3 class="message__sender">User Name</h3>
+      <h3 class="message__sender">{% userName %}</h3>
+      <time class="message__time">
+        {% time %}
+      </time>
       <p class="message__text">
         {% text %}
       </p>
-    </div>
-    <time class="message__time">
-      10:44:45
-    </time>
+    </div>    
   </div>
 `;
 

@@ -1,0 +1,7 @@
+.auth__server-message {
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: none;
+  animation: shake-err-message 0.1s both 2;
+  text-align: right;
+}

@@ -1,4 +1,4 @@
-const template: string = `
+const template = `
     <img
       src="{% link %}"
       alt="{% alt %}"

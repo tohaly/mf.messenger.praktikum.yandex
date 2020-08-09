@@ -1,8 +1,4 @@
-export const range = (
-  start: number,
-  end?: number,
-  step: number = 1
-): number[] => {
+export const range = (start: number, end?: number, step = 1): number[] => {
   const arr: number[] = [];
   let counter = !end ? 0 : start;
 

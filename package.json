@@ -6,17 +6,24 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "express": "4.17.1",
-    "spdy": "^4.0.2"
+    "express-rate-limit": "^5.1.3",
+    "helmet": "^4.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
     "autoprefixer": "^9.8.5",
     "cross-env": "^7.0.2",
     "css-loader": "^4.0.0",
     "cssnano": "^4.1.10",
-    "eslint": "^7.5.0",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "image-webpack-loader": "^6.0.0",
     "jest": "^26.1.0",
     "mini-css-extract-plugin": "^0.9.0",
@@ -35,11 +42,18 @@
     "webpack-md5-hash": "0.0.6"
   },
   "scripts": {
+    "eslint": "eslint --ext .ts ./src",
+    "eslintFix": "eslint --fix --ext .ts ./src",
     "start": "nodemon app.js",
     "deployNetlify": "git checkout deploy & git merge master & git push & git checkout master",
     "test": "jest",
     "build": "cross-env NODE_ENV=production rimraf dist && webpack --mode production",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --watch"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test npm run eslint"
+    }
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,6 @@
 .aside-panel__card-list {
   width: 100%;
   overflow-y: scroll;
+  min-height: 200px;
+  height: 100%;
 }

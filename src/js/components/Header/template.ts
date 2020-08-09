@@ -1,4 +1,4 @@
-const template: string = `
+const template = `
   <header class="header">
     <div class="header__logo-link">
       <div class="header__logo-img"></div>

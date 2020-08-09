@@ -1,97 +1,123 @@
-import { Block } from "../../util/Block/Block";
-import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
-import { auth } from "../../../index";
-import router from "../../router";
+import { Block } from '../../util/Block/Block';
+import { SimpleTemplateEngine } from '../../util/Simple-template-engine/simple-template-engine';
 
-import template from "./signup-template";
-import { inputsProps } from "./inputProps";
-import {
-  InputValidate,
-  IInputValidate,
-} from "../../components/Input/InputValidate";
+import router from '../../router';
+import { AuthApi } from '../../API/authApi';
+import { authorization } from '../../authorization';
+import { setLogin } from '../../util/authHelpers';
 
-import { Title, Input, ServerError, Button } from "../../components/index";
+import template from './signup-template';
+import { inputsProps } from './inputProps';
+import { InputValidate, IInputValidate } from '../../components/Input/InputValidate';
 
-import { Form, IForm } from "../../form";
+import { Title, Input, ServerMessage, Button, Loader } from '../../components/index';
+
+import { ALT_TEXT_SIGNUP, REGISTRATION_ERROR } from '../../constants';
+import { Form, IForm } from '../../form';
 
 interface IInputsProp {
   attributes: string;
   name: string;
-  handleBlur(element: HTMLInputElement, callback: Function): void;
+  className: string;
+  handleBlur?(element: HTMLInputElement, callback: Function): void;
 }
 
 const signupTemplatePage = new SimpleTemplateEngine(template);
+const auth = new AuthApi();
 
 class SignupPage extends Block {
   inputsValue: { [key: string]: string };
   validate: IInputValidate[];
   form: IForm;
+  isServerMessageSet: boolean;
 
   constructor() {
-    super("div", {
-      title: new Title({ text: "Signup" }),
-      serverError: new ServerError({
-        text: "",
-      }),
+    super('div', {
+      title: new Title({ text: 'Signup' }),
+      serverMessage: new ServerMessage({
+        text: '',
+        isError: false,
+      }).render(),
       button: new Button({
-        text: "Signup",
-        className: "auth__button",
+        text: 'Signup',
+        className: 'auth__button',
         isDisabled: true,
       }),
-      altLinkClassName: "auth__link_signup",
-      altText: "already have an account?",
+      altLinkClassName: 'auth__link_signup',
+      altText: ALT_TEXT_SIGNUP,
       isLoad: false,
     });
 
     this.inputsValue;
     this.validate = [];
     this.form;
+    this.isServerMessageSet = false;
   }
 
   _getInputs() {
     this.inputsValue = this.inputsValue || {};
     this.validate = this.validate || [];
     return (inputsProps as IInputsProp[])
-      .map((item) => {
-        const { name, attributes } = item;
-        const value = this.inputsValue[name]
-          ? `value="${this.inputsValue[name]}"`
-          : " ";
-        this.validate.push(new InputValidate(item.handleBlur));
+      .map(({ name, attributes, handleBlur, className }) => {
+        const value = this.inputsValue[name] ? `value="${this.inputsValue[name]}"` : ' ';
+        this.validate.push(new InputValidate(handleBlur));
 
         return new Input({
           attributes,
           name,
           value,
+          className,
         }).render();
       })
-      .join("");
+      .join('');
+  }
+
+  _clearError() {
+    if (this.isServerMessageSet) {
+      this.setProps({
+        serverMessage: new ServerMessage({
+          text: '',
+          isError: false,
+        }).render(),
+      });
+    }
+    this.isServerMessageSet = false;
+  }
+
+  _setLoader(isLoad: boolean) {
+    return new Loader({ isLoad }).render();
   }
 
   handleSigninClick(event: any) {
     event.preventDefault();
+
     this.setProps({ isLoad: true });
     auth
       .signup(this.inputsValue)
       .then(() => {
-        localStorage.setItem("login", this.inputsValue.login);
+        setLogin(authorization, this.inputsValue.login);
       })
       .then(() => {
-        this.inputsValue = {};
-      })
-      .then(() => {
-        router.go("#/");
+        router.go('#/');
       })
       .catch((err) => {
-        const { message = "Server error" } = err;
-        this.inputsValue.password = "";
+        const { status, responseText = REGISTRATION_ERROR } = err;
+
+        if (status === 500) {
+          router.go('#/error');
+        }
+
         this.setProps({
-          serverError: new ServerError({
-            text: message,
-          }),
+          serverMessage: new ServerMessage({
+            text: responseText,
+            isError: true,
+          }).render(),
         });
+
+        this.isServerMessageSet = true;
       })
       .finally(() => {
+        this.inputsValue = {};
         this.setProps({ isLoad: false });
       });
   }
@@ -102,53 +128,48 @@ class SignupPage extends Block {
 
   goSignin() {
     event.preventDefault();
-    router.go("#/signin");
+    router.go('#/signin');
   }
 
   componentDidMount() {
     this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
-      const { element, validate } = this;
-      const formContainer = element.querySelector("form");
-      const formButton: HTMLButtonElement = element.querySelector(
-        ".auth__button"
-      );
-      const inputs = element.querySelectorAll(".input");
-      const altButton: HTMLButtonElement = element.querySelector(
-        ".auth__link_signup"
-      );
+      const { element, validate, _clearError, _getInputsValue, handleSigninClick, goSignin } = this;
+
+      const formContainer = element.querySelector('form');
+      const formButton: HTMLButtonElement = element.querySelector('.auth__button');
+      const inputs = element.querySelectorAll('.input');
+      const altButton: HTMLButtonElement = element.querySelector('.auth__link_signup');
 
       this.form = new Form(formContainer, formButton);
       inputs.forEach((input, i) => {
         (input as HTMLInputElement).onfocus = validate[i].handleFocus;
         (input as HTMLInputElement).onblur = validate[i].handleBlur;
+        (input as HTMLInputElement).onclick = _clearError.bind(this);
       });
-      formContainer.onchange = this._getInputsValue.bind(this);
+      formContainer.onchange = _getInputsValue.bind(this);
       formContainer.oninput = this.form.formIsValid;
-      formButton.onclick = this.handleSigninClick.bind(this);
-      altButton.onclick = this.goSignin;
+      formButton.onclick = handleSigninClick.bind(this);
+      altButton.onclick = goSignin;
     });
   }
 
-  render(): string {
-    const {
-      title,
-      serverError,
-      isLoad,
-      button,
-      altLinkClassName,
-      altText,
-    } = this.props;
+  show() {
+    super.show();
+    this._clearError();
+    this.eventBus().emit(this.EVENTS.FLOW_CDU);
+  }
 
-    const loaderActivateClass = isLoad ? "loader_is-active" : "";
+  render(): string {
+    const { title, serverMessage, isLoad, button, altLinkClassName, altText } = this.props;
 
     return signupTemplatePage.compile({
       title: title.render(),
       inputs: this._getInputs(),
-      serverError: serverError.render(),
+      serverMessage,
       button: button.render(),
       altLinkClassName,
       altText,
-      loaderActivateClass,
+      loader: this._setLoader(isLoad),
     });
   }
 }

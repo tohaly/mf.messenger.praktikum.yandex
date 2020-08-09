@@ -1,4 +1,4 @@
-import { passwordValidator, simpleTextValidator } from "../../util/validators";
+import { passwordValidator, simpleTextValidator } from '../../util/validators';
 export const inputsProps = [
   {
     attributes: `
@@ -8,7 +8,8 @@ export const inputsProps = [
         maxlength="20"
         required
       `,
-    name: "login",
+    name: 'login',
+    className: 'auth__input_login',
     handleBlur: simpleTextValidator,
   },
   {
@@ -20,7 +21,8 @@ export const inputsProps = [
         autocomplete="on"
         required
       `,
-    name: "password",
+    name: 'password',
+    className: 'auth__input_password',
     handleBlur: passwordValidator,
   },
 ];
