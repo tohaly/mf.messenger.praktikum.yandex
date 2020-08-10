@@ -1,6 +1,5 @@
 @import url("./__button/auth__button.css");
 @import url("./__error/auth__error.css");
-@import url("./__error/_server/auth__error_server.css");
 @import url("./__form/auth__form.css");
 @import url("./__input/auth__input.css");
 @import url("./__link/auth__link.css");
@@ -10,14 +9,12 @@
 
 .auth {
   font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
-  width: 320px;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .auth_user-settings {
-  width: 100%;
   flex-direction: row;
   justify-content: space-between;
 }

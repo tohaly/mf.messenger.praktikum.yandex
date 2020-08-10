@@ -1,16 +1,16 @@
-import { Block } from "../../util/Block/Block";
+import { Block } from '../../util/Block/Block';
 import {
   SimpleTemplateEngine,
   objectKeyStringNumber,
-} from "../../util/Simple-template-engine/simple-template-engine";
+} from '../../util/Simple-template-engine/simple-template-engine';
 
-import { template } from "./template";
+import { template } from './template';
 
 const button = new SimpleTemplateEngine(template);
 
 class Button extends Block {
   constructor(props: objectKeyStringNumber) {
-    super("div", props);
+    super('div', props);
   }
 
   render(): string {
@@ -18,7 +18,7 @@ class Button extends Block {
     return button.compile({
       text: text,
       className: className,
-      disabled: isDisabled ? "disabled" : "",
+      disabled: isDisabled ? 'disabled' : '',
     });
   }
 }

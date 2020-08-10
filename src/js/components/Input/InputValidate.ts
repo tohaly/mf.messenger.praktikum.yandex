@@ -7,20 +7,20 @@ interface IInputValidate {
 }
 
 class InputValidate implements IInputValidate {
-  readonly _FIELD_REQUIRED = "This is felid required";
+  readonly _FIELD_REQUIRED = 'This is felid required';
   readonly _customValidate: Function;
 
   constructor(customValidate: Function) {
     this._customValidate = customValidate;
   }
 
-  _toggleError = (isActive: boolean, message: string = ""): void => {
+  _toggleError = (isActive: boolean, message = ''): void => {
     const err = (<HTMLInputElement>event.target).nextElementSibling;
     if (isActive) {
-      err.classList.add("auth__error_active");
+      err.classList.add('auth__error_active');
       err.textContent = message;
     } else {
-      err.classList.remove("auth__error_active");
+      err.classList.remove('auth__error_active');
       err.textContent = message;
     }
   };

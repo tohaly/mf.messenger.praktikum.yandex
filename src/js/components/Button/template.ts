@@ -1,4 +1,4 @@
-const template: string = `
+const template = `
     <button {% disabled %} class="button {% className %}" >{% text %}</button>
 `;
 

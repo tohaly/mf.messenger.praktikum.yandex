@@ -1,5 +1,5 @@
 .main-content {
   display: flex;
   padding: 0;
-  max-height: calc(100vh - 150px);
+  height: calc(100vh - 150px);
 }

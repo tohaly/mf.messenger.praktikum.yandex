@@ -1,5 +1,4 @@
-import { Route, IRoute, blockConstructor } from "./Route";
-import router from "../../router";
+import { Route, IRoute, blockConstructor } from './Route';
 
 interface IRouter {
   rootQuery: string;
@@ -46,7 +45,7 @@ class Router implements IRouter {
 
     Router.__instance = this;
 
-    window.addEventListener("hashchange", this._handleHashChange);
+    window.addEventListener('hashchange', this._handleHashChange);
   }
 
   _handleHashChange = (): void => {
@@ -89,7 +88,7 @@ class Router implements IRouter {
   _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
     if (!route) {
-      this.go("#/notfound");
+      this.go('#/notfound');
       return;
     }
     if (route._props.protect && this.isProtect) {
@@ -106,7 +105,7 @@ class Router implements IRouter {
   }
 
   go(pathname: string): void {
-    this.history.pushState({}, "", pathname);
+    this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
 

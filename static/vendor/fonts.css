@@ -1,12 +1,12 @@
 @font-face {
   font-family: "Balsamiq Sans";
   src: url("./fonts/BalsamiqSans-Regular.ttf") format("truetype");
-  font-weight: 700;
+  font-weight: normal;
   font-size: normal;
 }
 @font-face {
   font-family: "Balsamiq Sans";
   src: url("./fonts/BalsamiqSans-Bold.ttf") format("truetype");
-  font-weight: 400;
+  font-weight: bold;
   font-size: normal;
 }

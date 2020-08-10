@@ -1,4 +1,4 @@
-import { EventBus, IEventBus } from "../Event-bus/Event-bus";
+import { EventBus, IEventBus } from '../Event-bus/Event-bus';
 
 type propsObject = {
   [key: string]: any;
@@ -9,6 +9,7 @@ interface IBlock {
   _element: HTMLElement;
   _meta: { tagName: string; props: propsObject };
   props: propsObject;
+  lastActiveElement: Element;
   eventBus(): IEventBus;
 
   _registerEvents(eventBus: IEventBus): void;
@@ -17,7 +18,7 @@ interface IBlock {
   _componentDidMount(): void;
   componentDidMount(): void;
   _componentDidUpdate(oldProps: propsObject, newProps: propsObject): void;
-  componentDidUpdate(oldProps?: propsObject, newProps?: propsObject): boolean;
+  componentDidUpdate(): boolean;
   setProps(nextProps: propsObject): void;
   _render(): void;
   render(): string;
@@ -30,19 +31,20 @@ interface IBlock {
 
 class Block implements IBlock {
   EVENTS: { [key: string]: string } = {
-    INIT: "init",
-    FLOW_CDM: "flow:component-did-mount",
-    FLOW_CDU: "flow:component-did-update",
-    FLOW_RENDER: "flow:render",
+    INIT: 'init',
+    FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
+    FLOW_RENDER: 'flow:render',
   };
 
   _element: HTMLElement = null;
+  lastActiveElement: Element;
   _meta: { tagName: string; props: propsObject } = null;
 
   props: propsObject;
   eventBus: () => IEventBus;
 
-  constructor(tagName: string = "div", props: propsObject = {}) {
+  constructor(tagName = 'div', props: propsObject = {}) {
     const eventBus = new EventBus();
     this._meta = {
       tagName,
@@ -50,6 +52,7 @@ class Block implements IBlock {
     };
 
     this.props = this._makePropsProxy(props);
+    this.lastActiveElement;
 
     this.eventBus = (): IEventBus => eventBus;
     this._registerEvents(eventBus);
@@ -90,7 +93,7 @@ class Block implements IBlock {
     this.eventBus().emit(this.EVENTS.FLOW_RENDER);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): boolean {
     return true;
   }
 
@@ -98,7 +101,7 @@ class Block implements IBlock {
     if (!nextProps) {
       return;
     }
-
+    this.lastActiveElement = document.activeElement;
     Object.assign(this.props, nextProps);
   };
 
@@ -109,6 +112,7 @@ class Block implements IBlock {
   _render(): void {
     const block = this.render();
     this._element.innerHTML = block;
+    this._setLastFocusInput();
   }
 
   render(): any {}
@@ -121,7 +125,7 @@ class Block implements IBlock {
     return new Proxy(props, {
       get(target: propsObject, prop: string | number) {
         const value = target[prop];
-        return typeof value === "function" ? value.bind(target) : value;
+        return typeof value === 'function' ? value.bind(target) : value;
       },
 
       set: (target: any, prop: string | number, value: string): boolean => {
@@ -130,7 +134,7 @@ class Block implements IBlock {
         return true;
       },
       deleteProperty() {
-        throw new Error("No access");
+        throw new Error('No access');
       },
     });
   };
@@ -139,13 +143,21 @@ class Block implements IBlock {
     return document.createElement(tagName);
   }
 
+  _setLastFocusInput() {
+    const element = this.lastActiveElement;
+    if (element && element.tagName === 'INPUT') {
+      const className = element.classList[2];
+      (document.querySelector(`.${className}`) as HTMLInputElement).focus();
+    }
+  }
+
   show(): void {
-    this.getContent().style.display = "block";
+    this.getContent().style.display = 'block';
   }
 
   hide(): void {
-    this.getContent().style.display = "none";
+    this.getContent().style.display = 'none';
   }
 }
 
-export { Block, IBlock };
+export { Block, IBlock, propsObject };

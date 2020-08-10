@@ -1,4 +1,4 @@
-const template: string = `
+const template = `
     <div class="form__input-wrapper">
       <input
       class="input auth__input {% className %}"

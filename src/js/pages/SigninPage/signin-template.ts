@@ -1,12 +1,12 @@
-const signinPageTemplate: string = `
-  <div class="root">
+export const template = `
+  <div class="rot">
   <main class="main-content">
     <div class="auth-with-container">
       <div class="auth">
         {% title %}
         <form class="auth__form auth__form_signin">
           {% inputs %}          
-          {% serverError %}
+          {% serverMessage %}
           {% button %}
           <a href="#" class="link auth__link auth__link_signin"
             > {% altText %} </a
@@ -14,12 +14,7 @@ const signinPageTemplate: string = `
           </form>          
         </div>
       </div>
-      <div class="loader {% loaderActivateClass %}">
-        <div class="loader__item"></div>
-        <p class="loader__text">Загрузка, подождите...</p>
-      </div>
+      {% loader %}
     </main>
   </div>
   `;
-
-export default signinPageTemplate;

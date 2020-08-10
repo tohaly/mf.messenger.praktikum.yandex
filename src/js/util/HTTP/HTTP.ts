@@ -1,14 +1,8 @@
 type headersStringKey = { [key: string]: string };
 type deepObject = { [key: string]: string | deepObject };
-type modeType = "same-origin" | "no-cors" | "cors";
+type modeType = 'same-origin' | 'no-cors' | 'cors';
 // type credentialsType = "omit" | "same-origin" | "include";
-type cacheType =
-  | "default»"
-  | "no-store"
-  | "reload"
-  | "no-cache"
-  | "force-cache"
-  | "only-if-cached";
+type cacheType = 'default»' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached';
 
 interface IOptions {
   headers?: headersStringKey;
@@ -27,47 +21,49 @@ interface IHTTP {
   queryStringify(data: deepObject): string;
   get(url: string, options?: IOptions): Promise<XMLHttpRequest>;
   post(url: string, options?: IOptions): Promise<XMLHttpRequest>;
+  put(url: string, options?: IOptions): Promise<XMLHttpRequest>;
   request(url: string, options?: IOptions): Promise<unknown>;
 }
 
 class HTTP implements IHTTP {
   METHODS: any;
-  ERROR_NEED_METHOD = "Need to specify a method";
+  ERROR_NEED_METHOD = 'Need to specify a method';
   constructor() {
     this.METHODS = {
-      GET: "GET",
-      POST: "POST",
+      GET: 'GET',
+      POST: 'POST',
+      PUT: 'PUT',
     };
     this.queryStringify = this.queryStringify.bind(this);
     this.request = this.request.bind(this);
   }
   getDeepParams(keyName: string, object: deepObject): string {
     return Object.keys(object).reduce((result, key, index, arr) => {
-      let obj = object[key];
-      let params: string = `${keyName}[${key}]=${obj}`;
+      const obj = object[key];
+      let params = `${keyName}[${key}]=${obj}`;
 
-      if (typeof obj === "object") {
+      if (typeof obj === 'object') {
         params = this.getDeepParams(`${keyName}[${key}]`, obj);
       }
-      return `${result}${params}${index < arr.length - 1 ? "&" : ""}`;
-    }, "");
+      return `${result}${params}${index < arr.length - 1 ? '&' : ''}`;
+    }, '');
   }
 
   queryStringify(data: deepObject): string {
-    if (typeof data !== "object") {
-      throw new Error("Data not object");
+    if (typeof data !== 'object') {
+      throw new Error('Data not object');
     }
 
     const keys = Object.keys(data);
     return keys.reduce((result, key, index) => {
-      let obj = data[key];
+      const obj = data[key];
       let param = `${key}=${obj}`;
 
-      if (typeof obj === "object") {
+      if (typeof obj === 'object') {
         param = this.getDeepParams(key, obj);
       }
-      return `${result}${param}${index < keys.length - 1 ? "&" : ""}`;
-    }, "");
+      return `${result}${param}${index < keys.length - 1 ? '&' : ''}`;
+    }, '');
   }
 
   get(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
@@ -76,6 +72,10 @@ class HTTP implements IHTTP {
 
   post(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: this.METHODS.POST });
+  }
+
+  put(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
+    return this.request(url, { ...options, method: this.METHODS.PUT });
   }
 
   request(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
@@ -88,14 +88,11 @@ class HTTP implements IHTTP {
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
         const isGet = method === this.METHODS.GET;
 
-        xhr.open(
-          method,
-          isGet && !!body ? `${url}${this.queryStringify(body)}` : url
-        );
+        xhr.open(method, isGet && !!body ? `${url}${this.queryStringify(body)}` : url);
 
+        xhr.withCredentials = true;
         Object.keys(headers).forEach((key) => {
           xhr.setRequestHeader(key, headers[key]);
         });
@@ -107,7 +104,7 @@ class HTTP implements IHTTP {
         if (isGet || !body) {
           xhr.send();
         } else {
-          xhr.send(JSON.stringify(body));
+          xhr.send(body);
         }
       }.bind(this)
     );

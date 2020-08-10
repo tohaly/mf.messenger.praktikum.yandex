@@ -1,4 +1,4 @@
-const template: string = `
+const template = `
   <div class="error">
     <h1 class="error__title">{% errorCode %}</h1>
     <p class="error__subtitle">{% errorTitle %}</p>

@@ -18,8 +18,8 @@ interface ISimpleTemplateEngine {
 }
 
 class SimpleTemplateEngine implements ISimpleTemplateEngine {
-  _TEMPLATE_REGEXP: RegExp = /\{\%(.*?)\%\}/gi;
-  _REGEXP_CTX: RegExp = /\(\)\(\%(.*?)\%\)/gi;
+  _TEMPLATE_REGEXP = /\{\%(.*?)\%\}/gi;
+  _REGEXP_CTX = /\(\)\(\%(.*?)\%\)/gi;
   _template: string;
 
   constructor(template: string) {
@@ -27,7 +27,7 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
   }
 
   compile(ctx?: objectKeyStringNumber): string {
-    let html = this._compileTemplate(ctx);
+    const html = this._compileTemplate(ctx);
     return html;
   }
 
@@ -40,19 +40,16 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
       if (key[1]) {
         const tmplValue: any = key[1].trim();
         const data: any = this.get(ctx, tmplValue);
-        if (typeof data === "function") {
+        if (typeof data === 'function') {
           window[tmplValue] = data;
-          tmpl = tmpl.replace(
-            new RegExp(key[0], "gi"),
-            `window.${tmplValue}()`
-          );
+          tmpl = tmpl.replace(new RegExp(key[0], 'gi'), `window.${tmplValue}()`);
 
           const keyCtx = this._REGEXP_CTX.exec(tmpl);
           if (keyCtx) {
             tmpl = tmpl.replace(keyCtx[0], `.${keyCtx[1].trim()}()`);
           }
         }
-        tmpl = tmpl.replace(new RegExp(key[0], "gi"), data);
+        tmpl = tmpl.replace(new RegExp(key[0], 'gi'), data);
       }
       continue;
     }
@@ -64,9 +61,9 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
     path: string,
     defaultValue?: string | boolean | Function
   ): string | boolean | Function {
-    const keys = path.replace("]", "").split(/[\[\.]/gi);
+    const keys = path.split('.');
     let result: any = obj;
-    for (let key of keys) {
+    for (const key of keys) {
       const value = result[key];
 
       if (!value) {
@@ -78,9 +75,9 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
   }
 
   getNode(ctx?: objectKeyStringNumber): HTMLElement {
-    const element: HTMLElement = document.createElement("div");
+    const element: HTMLElement = document.createElement('div');
 
-    element.insertAdjacentHTML("beforeend", this.compile(ctx).trim());
+    element.insertAdjacentHTML('beforeend', this.compile(ctx).trim());
 
     return element.firstChild as HTMLElement;
   }
