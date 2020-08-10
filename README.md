@@ -42,9 +42,11 @@ npm run deploy
 npm run build
 ```
 
-## Ссылка на развернутый проект
+## Ссылки на развернутый проект
 
 ```
+https://tohalb-chat.herokuapp.com/
+
 https://ecstatic-edison-b968c0.netlify.app/
 ```
 
