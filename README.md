@@ -36,11 +36,6 @@ npm run start
 npm run deploy
 ```
 
-### Сборка проекта
-
-```
-npm run build
-```
 
 ## Ссылки на развернутый проект
 
