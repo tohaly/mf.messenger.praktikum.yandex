@@ -1,56 +1,34 @@
-import { Block } from "../../util/Block/Block";
-import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
-import router from "../../router";
-import { isLogin } from "../../util/isLogin";
-import { auth } from "../../../index";
+import { Block } from '../../util/Block/Block';
+import { SimpleTemplateEngine } from '../../util/Simple-template-engine/simple-template-engine';
+import router from '../../router';
+import { authorization } from '../../authorization';
+import { logoutHelper } from '../../util/authHelpers';
+import { AuthApi } from '../../API/authApi';
 
-import { Button } from "./HeaderButton/HeaderButton";
-import { template } from "./template";
+import { Button } from './HeaderButton/HeaderButton';
+import { template } from './template';
 
 const tmplButton = new SimpleTemplateEngine(template);
 
-const buttonsLogout = [
-  new Button({
-    text: "Signin",
-    className: "header__button_signin",
-  }),
-  new Button({
-    text: "Signup",
-    className: "header__button_signup",
-  }),
-];
-
-const buttonsLogin = [
-  new Button({
-    text: "Settings",
-    className: "header__button_settings",
-  }),
-  new Button({
-    text: `${localStorage.getItem("login")} ❌`,
-    className: "header__button_logout",
-  }),
-];
-
-const initButtons = isLogin() ? buttonsLogin : buttonsLogout;
-
 class Header extends Block {
   constructor() {
-    super("div", {
-      buttons: initButtons.map((item) => item.render()).join(""),
+    super('div', {
+      buttons: null,
     });
   }
 
   logout() {
+    const auth = new AuthApi();
     auth
       .logout()
       .then(() => {
-        localStorage.removeItem("login");
+        logoutHelper(authorization);
       })
       .then(() => {
-        router.go("#/signin");
+        router.go('#/signin');
       })
       .catch(() => {
-        router.go("#/error");
+        router.go('#/error');
       });
   }
 
@@ -58,8 +36,8 @@ class Header extends Block {
     event.preventDefault();
     const reg = /header__button_(.*)/gi;
     const result = reg.exec((<HTMLElement>event.target).classList[2]);
-    let path = result[1];
-    if (path === "logout") {
+    const path = result[1];
+    if (path === 'logout') {
       this.logout();
       return;
     }
@@ -67,45 +45,67 @@ class Header extends Block {
   }
 
   headerLogoClickHeader(): void {
-    router.go("#/");
+    router.go('#/');
+  }
+
+  setButtons() {
+    if (authorization.login) {
+      this.setProps({
+        buttons: [
+          new Button({
+            text: 'Settings',
+            className: 'header__button_settings',
+          }),
+          new Button({
+            text: `${authorization.login} ❌`,
+            className: 'header__button_logout',
+          }),
+        ]
+          .map((item) => item.render())
+          .join(''),
+      });
+      return;
+    }
+    this.setProps({
+      buttons: [
+        new Button({
+          text: 'Signin',
+          className: 'header__button_signin',
+        }),
+        new Button({
+          text: 'Signup',
+          className: 'header__button_signup',
+        }),
+      ]
+        .map((item) => item.render())
+        .join(''),
+    });
   }
 
   componentDidMount() {
+    this.setButtons();
     document.addEventListener(
-      "changeLocalStorage",
+      'changeAuthorization',
       () => {
-        const buttonsLogin = [
-          new Button({
-            text: "Settings",
-            className: "header__button_settings",
-          }),
-          new Button({
-            text: `${localStorage.getItem("login")} ❌`,
-            className: "header__button_logout",
-          }),
-        ];
-        const buttons = isLogin() ? buttonsLogin : buttonsLogout;
-        this.setProps({
-          buttons: buttons.map((item) => item.render()).join(""),
-        });
+        this.setButtons();
       },
       false
     );
 
     this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
-      const menuBatons = this.element.querySelectorAll(".header__button");
+      const menuBatons = this.element.querySelectorAll('.header__button');
       menuBatons.forEach((element) => {
         (element as HTMLElement).onclick = this.headerClickEvents.bind(this);
       });
 
       (this.element.querySelector(
-        ".header__logo-link"
+        '.header__logo-link'
       ) as HTMLDivElement).onclick = this.headerLogoClickHeader;
     });
   }
 
   render(): string {
-    const { buttons, loginName } = this.props;
+    const { buttons } = this.props;
     return tmplButton.compile({
       buttons,
     });

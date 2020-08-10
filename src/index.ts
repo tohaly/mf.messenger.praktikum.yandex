@@ -1,7 +1,8 @@
-import "./index.css";
-import router from "./js/router";
-import { Header } from "./js/components/";
-import { AuthApi } from "./js/API/auth-api"; // TESTING
+import './index.css';
+import router from './js/router';
+import { authorization } from './js/authorization';
+import { Header } from './js/components/';
+import { isAlreadyLogin } from './js/util/authHelpers';
 
 import {
   ServerError,
@@ -10,58 +11,29 @@ import {
   SigninPage,
   SignupPage,
   UserSettings,
-} from "./js/pages/index";
+} from './js/pages/index';
 
-export const auth = new AuthApi("/auth/");
+isAlreadyLogin(authorization);
 
-document.querySelector("#header").appendChild(new Header().getContent());
-
-fetch("https://ya-praktikum.tech/api/v2/auth/signin", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  credentials: "include",
-  body: JSON.stringify({
-    login: "tohalb",
-    password: "hgfrd26Y1",
-  }),
-}).then((res) => console.log(res));
+document.querySelector('#header').appendChild(new Header().getContent());
 
 router
-  .useProtect("#/", MainPage)
-  .useDefault("#/signin", SigninPage)
-  .use("#/signup", SignupPage)
-  .use("#/settings", UserSettings)
-  .use("#/error", ServerError)
-  .use("#/notfound", NotFound)
+  .useProtect('#/', MainPage)
+  .useDefault('#/signin', SigninPage)
+  .use('#/signup', SignupPage)
+  .use('#/settings', UserSettings)
+  .use('#/error', ServerError)
+  .use('#/notfound', NotFound)
   .start();
 
-const eventItemInserted = new Event("changeLocalStorage");
-const storageSetItem = localStorage.setItem;
-const storageRemoveItem = localStorage.removeItem;
-
-localStorage.removeItem = function () {
-  storageRemoveItem.apply(this, arguments as any);
-  document.dispatchEvent(eventItemInserted);
-};
-
-localStorage.setItem = function () {
-  console.log("do");
-  storageSetItem.apply(this, arguments as any);
-  document.dispatchEvent(eventItemInserted);
-  console.log("posle");
-};
-
-const storageHandler = function () {
-  if (!localStorage.getItem("login")) {
-    router.go("#/signin");
+const authListener = function () {
+  if (!authorization.login) {
+    router.go('#/signin');
     router.isProtect = true;
     return;
   }
-  console.log("here");
   router.isProtect = false;
-  router.go("#/");
+  router.go('#/');
 };
 
-document.addEventListener("changeLocalStorage", storageHandler, false);
+document.addEventListener('changeAuthorization', authListener, false);

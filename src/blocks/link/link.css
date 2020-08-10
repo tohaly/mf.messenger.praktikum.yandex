@@ -2,6 +2,7 @@
   transition: opacity 0.4s;
   font-family: "Balsamiq Sans", Arial, Helvetica, sans-serif;
   font-weight: normal;
+  cursor: pointer;
 }
 
 .link:hover {

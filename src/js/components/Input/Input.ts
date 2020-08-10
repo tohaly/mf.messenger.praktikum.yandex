@@ -1,20 +1,20 @@
-import { Block } from "../../util/Block/Block";
+import { Block } from '../../util/Block/Block';
 import {
   SimpleTemplateEngine,
   objectKeyStringNumber,
-} from "../../util/Simple-template-engine/simple-template-engine";
+} from '../../util/Simple-template-engine/simple-template-engine';
 
-import { template } from "./template";
+import { template } from './template';
 
 const input = new SimpleTemplateEngine(template);
 
 class Input extends Block {
   constructor(props: objectKeyStringNumber) {
-    super("div", props);
+    super('div', props);
   }
 
   render(): string {
-    const { attributes, name, className = "", value } = this.props;
+    const { attributes, name, className = '', value = ' ' } = this.props;
     return input.compile({
       attributes,
       name,

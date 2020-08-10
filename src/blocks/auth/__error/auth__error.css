@@ -16,4 +16,5 @@
   margin-bottom: 10px;
   display: none;
   animation: shake-err-message 0.1s both 2;
+  max-width: 250px;
 }

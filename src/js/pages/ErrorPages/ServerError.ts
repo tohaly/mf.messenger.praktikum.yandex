@@ -1,19 +1,32 @@
-import { Block } from "../../util/Block/Block";
-import { SimpleTemplateEngine } from "../../util/Simple-template-engine/simple-template-engine";
+import { Block } from '../../util/Block/Block';
 
-import { template } from "./error-template";
+import { SimpleTemplateEngine } from '../../util/Simple-template-engine/simple-template-engine';
+import { template } from './error-template';
+
+import router from '../../router';
 
 const templateEngine = new SimpleTemplateEngine(template);
 
 class ServerError extends Block {
   constructor() {
-    super("div");
+    super('div');
+  }
+
+  goMain() {
+    router.go('#/');
+  }
+
+  componentDidMount() {
+    this.eventBus().on(this.EVENTS.FLOW_RENDER, () => {
+      const link: HTMLLinkElement = this.element.querySelector('.error__link');
+      link.onclick = this.goMain.bind(this);
+    });
   }
 
   render(): string {
     return templateEngine.compile({
-      errorCode: "Error 500",
-      errorTitle: "Problems with server",
+      errorCode: 'Error 500',
+      errorTitle: 'Problems with server',
     });
   }
 }

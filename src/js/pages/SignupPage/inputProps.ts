@@ -3,7 +3,7 @@ import {
   simpleTextValidator,
   emailValidator,
   phoneValidator,
-} from "../../util/validators";
+} from '../../util/validators';
 
 export const inputsProps = [
   {
@@ -14,7 +14,8 @@ export const inputsProps = [
         maxlength="20"
         required
         `,
-    name: "first_name",
+    className: 'auth__input_first-name',
+    name: 'first_name',
     handleBlur: simpleTextValidator,
   },
   {
@@ -25,7 +26,8 @@ export const inputsProps = [
         maxlength="20"
         required
         `,
-    name: "second_name",
+    className: 'auth__input_second-name',
+    name: 'second_name',
     handleBlur: simpleTextValidator,
   },
   {
@@ -35,7 +37,8 @@ export const inputsProps = [
         pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
         required
         `,
-    name: "email",
+    className: 'auth__input_email',
+    name: 'email',
     handleBlur: emailValidator,
   },
   {
@@ -46,7 +49,8 @@ export const inputsProps = [
         maxlength="20"
         required
       `,
-    name: "login",
+    className: 'auth__input_login',
+    name: 'login',
     handleBlur: simpleTextValidator,
   },
   {
@@ -58,7 +62,8 @@ export const inputsProps = [
         autocomplete="on"
         required
       `,
-    name: "password",
+    className: 'auth__input_password',
+    name: 'password',
     handleBlur: passwordValidator,
   },
   {
@@ -70,7 +75,8 @@ export const inputsProps = [
         autocomplete="on"
         required
       `,
-    name: "phone",
+    className: 'auth__input_phone',
+    name: 'phone',
     handleBlur: phoneValidator,
   },
 ];

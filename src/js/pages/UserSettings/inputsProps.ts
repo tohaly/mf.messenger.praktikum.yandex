@@ -3,7 +3,7 @@ import {
   simpleTextValidator,
   emailValidator,
   phoneValidator,
-} from "../../util/validators";
+} from '../../util/validators';
 
 export const inputsProps = {
   userInfo: [
@@ -15,7 +15,8 @@ export const inputsProps = {
           maxlength="20"
           required
           `,
-      name: "first_name",
+      className: 'auth__input_user auth__input_user_first-name',
+      name: 'first_name',
       handleBlur: simpleTextValidator,
     },
     {
@@ -26,7 +27,8 @@ export const inputsProps = {
           maxlength="20"
           required
           `,
-      name: "second_name",
+      className: 'auth__input_user auth__input_user_second-name',
+      name: 'second_name',
       handleBlur: simpleTextValidator,
     },
     {
@@ -36,7 +38,8 @@ export const inputsProps = {
           pattern="^.{1,}@([-0-9A-Za-z]{1,}\\.){1,3}[-A-Za-z]{2,}$"
           required
           `,
-      name: "email",
+      className: 'auth__input_user auth__input_user_first-email',
+      name: 'email',
       handleBlur: emailValidator,
     },
     {
@@ -47,7 +50,20 @@ export const inputsProps = {
           maxlength="20"
           required
         `,
-      name: "login",
+      name: 'login',
+      className: 'auth__input_user auth__input_user_login',
+      handleBlur: simpleTextValidator,
+    },
+    {
+      attributes: `
+          type="text"
+          placeholder="Display name" 
+          minlength="2"
+          maxlength="20"
+          required
+        `,
+      className: 'auth__input_user auth__input_user_display-name',
+      name: 'display_name',
       handleBlur: simpleTextValidator,
     },
     {
@@ -59,7 +75,8 @@ export const inputsProps = {
           autocomplete="on"
           required
         `,
-      name: "phone",
+      className: 'auth__input_user auth__input_user_phone',
+      name: 'phone',
       handleBlur: phoneValidator,
     },
   ],
@@ -67,15 +84,10 @@ export const inputsProps = {
     {
       attributes: `
       type="file"
-      placeholder="old password"
-      pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*"
-      minlength="8"
-      autocomplete="on"
       required
-      title=" "
     `,
-      name: "avatar",
-      handleBlur: passwordValidator,
+      name: 'avatar',
+      className: 'auth__input_avatar',
     },
   ],
   password: [
@@ -88,7 +100,8 @@ export const inputsProps = {
       autocomplete="on"
       required
     `,
-      name: "old-password",
+      name: 'oldPassword',
+      className: 'auth__input_password auth__input_password_old',
       handleBlur: passwordValidator,
     },
     {
@@ -100,15 +113,8 @@ export const inputsProps = {
       autocomplete="on"
       required
     `,
-      name: "new-password",
-      handleBlur(element: HTMLInputElement, callback: Function) {
-        const PASSWORD_COINCIDES = "Same as old password";
-        passwordValidator(element, callback);
-        // if (element.value === form.virtualForm["old-password"]) {
-        //   callback(true, PASSWORD_COINCIDES);
-        //   return;
-        // }
-      },
+      name: 'newPassword',
+      className: 'auth__input_password auth__input_password_new',
     },
   ],
 };
