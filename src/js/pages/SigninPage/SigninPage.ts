@@ -146,15 +146,15 @@ class SigninPage extends Block {
 
       const formContainer = element.querySelector('form');
       const formButton: HTMLButtonElement = element.querySelector('.auth__button');
-      const inputs = element.querySelectorAll('.input');
+      const inputs: NodeListOf<HTMLInputElement> = element.querySelectorAll('.input');
       const altButton: HTMLButtonElement = element.querySelector('.auth__link_signin');
 
       this.form = new Form(formContainer, formButton);
 
       inputs.forEach((input, i) => {
-        (input as HTMLInputElement).onfocus = validate[i].handleFocus;
-        (input as HTMLInputElement).onblur = validate[i].handleBlur;
-        (input as HTMLInputElement).onclick = _clearError;
+        input.onfocus = validate[i].handleFocus;
+        input.onblur = validate[i].handleBlur;
+        input.onclick = _clearError;
       });
 
       formContainer.onchange = _getInputsValue.bind(this);

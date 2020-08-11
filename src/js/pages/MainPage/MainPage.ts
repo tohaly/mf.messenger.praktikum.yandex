@@ -11,7 +11,6 @@ import { logoutHelper } from '../../util/authHelpers';
 import router from '../../router';
 
 import { testMessages } from '../../testMessages';
-import { randomNumber } from '../../util/HTTP/randomNumber';
 
 import {
   AVATAR_URL,
@@ -25,6 +24,7 @@ import {
 import AVATAR_MINI from '../../../../static/images/chat-card__img.png';
 
 import { Avatar, ChatCard, Message, Popup, Input, Button, Loader } from '../../components/index';
+import { randomNumber } from '../../util/HTTP/randomNumber';
 
 const mainPage = new SimpleTemplateEngine(template);
 const chatApi = new ChatApi();
@@ -42,6 +42,7 @@ class MainPage extends Block {
   userName: string;
   scrollTopChats: number;
   chatListContainer: HTMLDivElement;
+  savedNumbOfMessage: { [key: string]: number };
 
   constructor() {
     super('div', {
@@ -66,6 +67,7 @@ class MainPage extends Block {
     this.chatsCard;
     this.chats;
     this.activeChatId;
+    this.savedNumbOfMessage = {};
 
     this.messages = [];
 
@@ -76,7 +78,6 @@ class MainPage extends Block {
     this.scrollTopChats;
 
     this.handleInput = this.handleInput.bind(this);
-    this.handleClickSendMessage = this.handleClickSendMessage.bind(this);
     this.handleClickSendMessage = this.handleClickSendMessage.bind(this);
     this.handleGetActiveChat = this.handleGetActiveChat.bind(this);
     this.handleClosePopup = this.handleClosePopup.bind(this);
@@ -135,10 +136,30 @@ class MainPage extends Block {
     })}, ${date.getFullYear()}`;
   }
 
+  _errorHandler(status: number, propsAuthError: objectKeyString, propsBaseError: objectKeyString) {
+    if (status === 500) {
+      router.go('#/error');
+    }
+    console.log(status);
+    if (status === 401) {
+      this.setProps({
+        ...propsAuthError,
+      });
+      setTimeout(() => {
+        logoutHelper(authorization);
+        router.go('#/signin');
+      }, 2000);
+      return;
+    }
+    this.setProps({
+      ...propsBaseError,
+    });
+  }
+
   getUserDataFromServer() {
-    authApi.getUserInfo().then(({ avatar, display_name }) => {
-      this.userAvatar = `${AVATAR_URL}${avatar}`;
-      this.userName = display_name;
+    authApi.getUserInfo().then(({ avatar, login }) => {
+      this.userAvatar = avatar ? `${AVATAR_URL}${avatar}` : AVATAR_MINI;
+      this.userName = login;
     });
   }
 
@@ -161,18 +182,15 @@ class MainPage extends Block {
       })
       .catch((err) => {
         const { status } = err;
-
-        if (status === 500) {
-          router.go('#/error');
-        }
-        if (status === 401) {
-          logoutHelper(authorization);
-          router.go('#/signin');
-        }
-
-        this.setProps({
-          chatCards: this._placeholderChatTemplate(CHATS_LOAD_ERROR),
-        });
+        this._errorHandler(
+          status,
+          {
+            chatCards: this._placeholderChatTemplate(AUTH_ERR_AND_REDIRECT),
+          },
+          {
+            chatCards: this._placeholderChatTemplate(CHATS_LOAD_ERROR),
+          }
+        );
       })
       .finally(() => {
         this.setProps({ isLoad: false });
@@ -201,23 +219,28 @@ class MainPage extends Block {
       .join('');
   }
 
-  getMessages() {
-    const random = randomNumber(0, 16);
-    return testMessages
-      .map((item, i) => {
-        if (i >= random) {
-          const isEven = i % 2;
+  _saveNumbOfMessage(numb: number) {
+    this.savedNumbOfMessage[this.activeChatId] = numb;
+  }
 
+  getMessages(id: string) {
+    const numbOfMessage = this.savedNumbOfMessage[id] || randomNumber(0, 16);
+
+    this._saveNumbOfMessage(numbOfMessage);
+
+    return testMessages
+      .map(({ text, isOwn }, i) => {
+        if (i >= numbOfMessage) {
           return new Message({
             avatar: new Avatar({
-              link: i % 2 ? this.userAvatar : AVATAR_MINI,
-              alt: isEven ? this.userName : 'SuperMegaGiper',
+              link: isOwn ? this.userAvatar : AVATAR_MINI,
+              alt: isOwn ? this.userName : 'SuperMegaGiper',
               className: 'message__avatar',
             }).render(),
-            text: item,
+            text,
             time: this.parseDate(new Date()),
-            isOwn: isEven ? true : false,
-            userName: isEven ? this.userName : 'SuperMegaGiper',
+            isOwn,
+            userName: isOwn ? this.userName : 'SuperMegaGiper',
           }).render();
         }
       })
@@ -303,23 +326,15 @@ class MainPage extends Block {
       })
       .catch((err) => {
         const { status } = err;
-
-        if (status === 500) {
-          router.go('#/error');
-        }
-        if (status === 401) {
-          this.setProps({
+        this._errorHandler(
+          status,
+          {
             popup: this._popupTemplate(true, AUTH_ERR_AND_REDIRECT),
-          });
-          setTimeout(() => {
-            logoutHelper(authorization);
-            router.go('#/signin');
-          }, 2000);
-          return;
-        }
-        this.setProps({
-          popup: this._popupTemplate(true, CHAT_CREATING_ERROR),
-        });
+          },
+          {
+            popup: this._popupTemplate(true, CHAT_CREATING_ERROR),
+          }
+        );
       })
       .finally(() => {
         this.setProps({ isLoad: false });
@@ -378,7 +393,7 @@ class MainPage extends Block {
       this.activeChatId = currentElement.dataset.chatid;
       this.setProps({
         chatCards: this.getChatCards(),
-        messages: this.getMessages(),
+        messages: this.getMessages(this.activeChatId),
       });
     }
   }

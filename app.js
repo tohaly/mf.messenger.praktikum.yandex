@@ -16,6 +16,9 @@ app.use(
   })
 );
 app.use(express.static('./dist'));
+app.get('*', function (req, res) {
+  res.send('<h1 style="text-align: center">Error 404, not found!</h1>', 404);
+});
 app.listen(PORT, function () {
   console.log('\x1b[32m%s\x1b[0m', `Server working on port ${PORT}.`);
 });

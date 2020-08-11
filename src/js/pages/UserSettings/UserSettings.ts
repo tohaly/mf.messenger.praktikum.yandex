@@ -328,11 +328,15 @@ class UserSettings extends Block {
 
       const formContainerInfo: HTMLFormElement = element.querySelector('.auth__form_user-info');
       const formButtonInfo: HTMLButtonElement = element.querySelector('.auth__button_user-setting');
-      const inputsUserInfo = element.querySelectorAll('.auth__input_user');
+      const inputsUserInfo: NodeListOf<HTMLInputElement> = element.querySelectorAll(
+        '.auth__input_user'
+      );
 
       const formContainerPassword: HTMLFormElement = element.querySelector('.auth__form_password');
       const formButtonPassword: HTMLButtonElement = element.querySelector('.auth__button_password');
-      const inputsPassword = element.querySelectorAll('.auth__input_password');
+      const inputsPassword: NodeListOf<HTMLInputElement> = element.querySelectorAll(
+        '.auth__input_password'
+      );
       const formContainerAvatar: HTMLFormElement = element.querySelector('.auth__form_avatar');
       const formButtonAvatar: HTMLButtonElement = element.querySelector('.auth__button_avatar');
       const inputAvatar: HTMLInputElement = element.querySelector('.auth__input_avatar');
@@ -341,9 +345,9 @@ class UserSettings extends Block {
 
       this.formInfo = new Form(formContainerInfo, formButtonInfo);
       inputsUserInfo.forEach((input, i) => {
-        (input as HTMLInputElement).onfocus = validateInfo[i].handleFocus;
-        (input as HTMLInputElement).onblur = validateInfo[i].handleBlur;
-        (input as HTMLInputElement).onclick = _clearErrors;
+        input.onfocus = validateInfo[i].handleFocus;
+        input.onblur = validateInfo[i].handleBlur;
+        input.onclick = _clearErrors;
       });
 
       this.formPassword = new Form(
@@ -352,9 +356,9 @@ class UserSettings extends Block {
         customValidatePassword
       );
       inputsPassword.forEach((input, i) => {
-        (input as HTMLInputElement).onfocus = validatePassword[i].handleFocus;
-        (input as HTMLInputElement).onblur = validatePassword[i].handleBlur;
-        (input as HTMLInputElement).onclick = _clearErrors;
+        input.onfocus = validatePassword[i].handleFocus;
+        input.onblur = validatePassword[i].handleBlur;
+        input.onclick = _clearErrors;
       });
 
       formContainerInfo.oninput = this.formInfo.formIsValid;

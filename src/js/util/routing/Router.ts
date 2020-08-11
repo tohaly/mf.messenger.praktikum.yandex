@@ -50,6 +50,7 @@ class Router implements IRouter {
 
   _handleHashChange = (): void => {
     const path = window.location.hash;
+
     this._onRoute(path);
   };
 
@@ -87,6 +88,7 @@ class Router implements IRouter {
 
   _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
+
     if (!route) {
       this.go('#/notfound');
       return;

@@ -45,7 +45,7 @@ describe('SimpleTemplateEngine', () => {
     const template = new SimpleTemplateEngine(stringWithProp);
 
     const actual = template.getNode(ctx).outerHTML;
-    const expected = '<button>Prop is not find</button>';
+    const expected = '<button>!!Prop is not found!!</button>';
     expect(actual).toEqual(expected);
   });
 });

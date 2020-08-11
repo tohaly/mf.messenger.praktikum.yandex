@@ -19,6 +19,7 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
   _TEMPLATE_REGEXP = /\{\%(.*?)\%\}/gi;
   _REGEXP_CTX = /\(\)\(\%(.*?)\%\)/gi;
   _template: string;
+  NOT_FOUND_PROP = '!!Prop is not found!!';
 
   constructor(template: string) {
     this._template = template;
@@ -53,7 +54,7 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
       const value = obj[key];
 
       if (!value) {
-        return 'Prop is not find';
+        return this.NOT_FOUND_PROP;
       }
       result = value;
     }
