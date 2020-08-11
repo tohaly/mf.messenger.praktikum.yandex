@@ -1,20 +1,18 @@
-type objectKeyStringNumber = {
-  [key: string]: any;
-};
+import { propsObject } from '../Block/Block';
 
 interface ISimpleTemplateEngine {
   _TEMPLATE_REGEXP: RegExp;
   _REGEXP_CTX: RegExp;
   _template: string;
 
-  compile(ctx?: objectKeyStringNumber, className?: string): string;
-  _compileTemplate(ctx?: objectKeyStringNumber): string;
-  get(
-    obj: objectKeyStringNumber,
-    path: string,
-    defaultValue?: string | boolean | Function
-  ): string | boolean | Function;
-  getNode(ctx: objectKeyStringNumber): ChildNode | HTMLElement;
+  compile(ctx?: objectKeyString, className?: string): string;
+  _compileTemplate(ctx?: objectKeyString): string;
+  get(obj: propsObject, path: string, defaultValue?: string): string | number | boolean;
+  getNode(ctx: objectKeyString): ChildNode | HTMLElement;
+}
+
+interface Window {
+  [key: string]: Function;
 }
 
 class SimpleTemplateEngine implements ISimpleTemplateEngine {
@@ -26,29 +24,20 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
     this._template = template;
   }
 
-  compile(ctx?: objectKeyStringNumber): string {
+  compile(ctx?: propsObject): string {
     const html = this._compileTemplate(ctx);
     return html;
   }
 
-  _compileTemplate(ctx: objectKeyStringNumber) {
+  _compileTemplate(ctx: propsObject) {
     let tmpl = this._template;
-    let key = null;
+    let key: string | RegExpExecArray = null;
     const regExp = this._TEMPLATE_REGEXP;
 
     while ((key = regExp.exec(tmpl))) {
       if (key[1]) {
-        const tmplValue: any = key[1].trim();
-        const data: any = this.get(ctx, tmplValue);
-        if (typeof data === 'function') {
-          window[tmplValue] = data;
-          tmpl = tmpl.replace(new RegExp(key[0], 'gi'), `window.${tmplValue}()`);
-
-          const keyCtx = this._REGEXP_CTX.exec(tmpl);
-          if (keyCtx) {
-            tmpl = tmpl.replace(keyCtx[0], `.${keyCtx[1].trim()}()`);
-          }
-        }
+        const tmplValue: string = key[1].trim();
+        const data = String(this.get(ctx, tmplValue));
         tmpl = tmpl.replace(new RegExp(key[0], 'gi'), data);
       }
       continue;
@@ -56,25 +45,22 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
     return tmpl;
   }
 
-  get(
-    obj: objectKeyStringNumber,
-    path: string,
-    defaultValue?: string | boolean | Function
-  ): string | boolean | Function {
+  get(obj: propsObject, path: string, defaultValue?: string): string | number | boolean {
     const keys = path.split('.');
-    let result: any = obj;
+    let result;
+
     for (const key of keys) {
-      const value = result[key];
+      const value = obj[key];
 
       if (!value) {
-        return defaultValue;
+        return 'Prop is not find';
       }
       result = value;
     }
     return result || defaultValue;
   }
 
-  getNode(ctx?: objectKeyStringNumber): HTMLElement {
+  getNode(ctx?: propsObject): HTMLElement {
     const element: HTMLElement = document.createElement('div');
 
     element.insertAdjacentHTML('beforeend', this.compile(ctx).trim());
@@ -83,4 +69,4 @@ class SimpleTemplateEngine implements ISimpleTemplateEngine {
   }
 }
 
-export { SimpleTemplateEngine, objectKeyStringNumber };
+export { SimpleTemplateEngine };

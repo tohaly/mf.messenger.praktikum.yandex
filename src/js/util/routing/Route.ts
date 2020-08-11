@@ -2,7 +2,7 @@ import { isEqual } from '../isEqual/isEqual';
 import { render } from '../render';
 import { IBlock } from '../Block/Block';
 
-type routeProps = { [key: string]: any };
+type routeProps = { rootQuery: string; protect?: boolean };
 type blockConstructor = new (
   tagName?: string,
   props?: { [key: string]: string | boolean }

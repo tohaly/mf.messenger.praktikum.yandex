@@ -33,7 +33,7 @@ class SignupPage extends Block {
 
   constructor() {
     super('div', {
-      title: new Title({ text: 'Signup' }),
+      title: new Title({ text: 'Signup' }).render(),
       serverMessage: new ServerMessage({
         text: '',
         isError: false,
@@ -42,7 +42,7 @@ class SignupPage extends Block {
         text: 'Signup',
         className: 'auth__button',
         isDisabled: true,
-      }),
+      }).render(),
       altLinkClassName: 'auth__link_signup',
       altText: ALT_TEXT_SIGNUP,
       isLoad: false,
@@ -88,7 +88,7 @@ class SignupPage extends Block {
     return new Loader({ isLoad }).render();
   }
 
-  handleSigninClick(event: any) {
+  handleSigninClick(event: Event) {
     event.preventDefault();
 
     this.setProps({ isLoad: true });
@@ -163,13 +163,13 @@ class SignupPage extends Block {
     const { title, serverMessage, isLoad, button, altLinkClassName, altText } = this.props;
 
     return signupTemplatePage.compile({
-      title: title.render(),
+      title,
       inputs: this._getInputs(),
       serverMessage,
-      button: button.render(),
+      button,
       altLinkClassName,
       altText,
-      loader: this._setLoader(isLoad),
+      loader: this._setLoader(Boolean(isLoad)),
     });
   }
 }

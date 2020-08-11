@@ -14,6 +14,7 @@ export const PASSWORD_COINCIDES = 'Passwords must not match';
 export const AUTH_ERR = 'An authorization error occurred';
 export const REGISTRATION_ERROR = 'Registration error';
 export const UNEXPECTED_ERROR = 'An unexpected error occurred';
+export const IS_NOT_ARRAY = 'Data is not array';
 
 // Layout text
 

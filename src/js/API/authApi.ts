@@ -1,33 +1,36 @@
 import { BaseAPI } from './baseApi';
 
 class AuthApi extends BaseAPI {
-  _url: string;
-  constructor() {
-    super();
-    this._url = this._baseUrl + '/auth/';
-  }
-  signup(body: { [key: string]: string }) {
+  handles = {
+    SIGNIN: '/auth/signin',
+    SIGNUP: '/auth/signup',
+    LOGOUT: '/auth/logout',
+    GET_USER_INFO: '/auth/user',
+  };
+
+  signup(body: objectKeyString) {
     const options = {
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     };
-    const route = 'signup';
+    const handle = this.getFullUrl(this.handles.SIGNUP);
 
-    return this._http.post(this._url + route, options).then((res: any) => this.getResponse(res));
+    return this._http.post(handle, options).then((res: XMLHttpRequest) => this.getResponse(res));
   }
 
-  signin(body: { [key: string]: string }) {
+  signin(body: objectKeyString) {
     const options = {
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     };
-    const route = 'signin';
 
-    return this._http.post(this._url + route, options).then((res: any) => this.getResponse(res));
+    const handle = this.getFullUrl(this.handles.SIGNIN);
+
+    return this._http.post(handle, options).then((res: XMLHttpRequest) => this.getResponse(res));
   }
 
   logout() {
@@ -35,16 +38,17 @@ class AuthApi extends BaseAPI {
       headers: {
         'Content-Type': 'application/json',
       },
-      method: 'POST',
     };
-    const route = 'logout';
 
-    return this._http.request(this._url + route, options).then((res: any) => this.getResponse(res));
+    const handle = this.getFullUrl(this.handles.LOGOUT);
+
+    return this._http.post(handle, options).then(this.getResponse);
   }
 
   getUserInfo() {
-    const route = 'user';
-    return this._http.get(this._url + route).then((res: any) => this.getResponseWithParse(res));
+    const handle = this.getFullUrl(this.handles.GET_USER_INFO);
+
+    return this._http.get(handle).then(this.getResponseWithParse);
   }
 }
 

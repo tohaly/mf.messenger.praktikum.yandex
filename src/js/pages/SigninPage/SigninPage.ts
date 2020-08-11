@@ -173,7 +173,7 @@ class SigninPage extends Block {
       button,
       altLinkClassName,
       altText,
-      loader: this._setLoader(isLoad),
+      loader: this._setLoader(Boolean(isLoad)),
     });
   }
 }

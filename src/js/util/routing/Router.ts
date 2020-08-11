@@ -78,8 +78,8 @@ class Router implements IRouter {
   }
 
   start(): void {
-    window.onpopstate = ((event: any): void => {
-      this._onRoute(event.currentTarget.location.hash);
+    window.onpopstate = ((event: PopStateEvent): void => {
+      this._onRoute((<Window>event.currentTarget).location.hash);
     }).bind(this);
 
     this._onRoute(window.location.hash);

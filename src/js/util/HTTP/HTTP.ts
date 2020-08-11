@@ -1,24 +1,23 @@
-type headersStringKey = { [key: string]: string };
-type deepObject = { [key: string]: string | deepObject };
-type modeType = 'same-origin' | 'no-cors' | 'cors';
-// type credentialsType = "omit" | "same-origin" | "include";
-type cacheType = 'default»' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached';
+type body = string | FormData;
 
 interface IOptions {
-  headers?: headersStringKey;
+  headers?: objectKeyString;
   method?: string;
-  body?: any;
-  mode?: modeType;
-  credentials?: string;
-  cache?: cacheType;
+  body?: body;
   timeout?: number;
 }
 
+interface IMethods {
+  GET: string;
+  POST: string;
+  PUT: string;
+}
+
 interface IHTTP {
-  METHODS: any;
+  METHODS: IMethods;
   ERROR_NEED_METHOD: string;
-  getDeepParams(keyName: string, object: deepObject): string;
-  queryStringify(data: deepObject): string;
+  getDeepParams(keyName: string, object: objectKeyString): string;
+  queryStringify(data: objectKeyString): string;
   get(url: string, options?: IOptions): Promise<XMLHttpRequest>;
   post(url: string, options?: IOptions): Promise<XMLHttpRequest>;
   put(url: string, options?: IOptions): Promise<XMLHttpRequest>;
@@ -26,7 +25,7 @@ interface IHTTP {
 }
 
 class HTTP implements IHTTP {
-  METHODS: any;
+  METHODS: IMethods;
   ERROR_NEED_METHOD = 'Need to specify a method';
   constructor() {
     this.METHODS = {
@@ -37,7 +36,7 @@ class HTTP implements IHTTP {
     this.queryStringify = this.queryStringify.bind(this);
     this.request = this.request.bind(this);
   }
-  getDeepParams(keyName: string, object: deepObject): string {
+  getDeepParams(keyName: string, object: objectKeyString): string {
     return Object.keys(object).reduce((result, key, index, arr) => {
       const obj = object[key];
       let params = `${keyName}[${key}]=${obj}`;
@@ -49,7 +48,7 @@ class HTTP implements IHTTP {
     }, '');
   }
 
-  queryStringify(data: deepObject): string {
+  queryStringify(data: objectKeyString): string {
     if (typeof data !== 'object') {
       throw new Error('Data not object');
     }
@@ -80,8 +79,8 @@ class HTTP implements IHTTP {
 
   request(url: string, options: IOptions = {}): Promise<XMLHttpRequest> {
     const { headers = {}, method, body, timeout = 5000 } = options;
-    return new Promise(
-      function (resolve: any, reject: any) {
+    return new Promise<XMLHttpRequest>(
+      function (resolve: (arg: XMLHttpRequest) => void, reject: <T>(arg: T) => void) {
         if (!method) {
           reject(this.ERROR_NEED_METHOD);
           return;

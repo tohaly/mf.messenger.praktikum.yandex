@@ -20,6 +20,7 @@ import {
   AUTH_ERR_AND_REDIRECT,
   CHAT_CREATING_ERROR,
   PIC_LOAD_ERR,
+  IS_NOT_ARRAY,
 } from '../../constants';
 import AVATAR_MINI from '../../../../static/images/chat-card__img.png';
 
@@ -33,7 +34,7 @@ class MainPage extends Block {
   inputElement: HTMLInputElement;
   sendButton: HTMLButtonElement;
   popupInputValue: string;
-  chats: {}[];
+  chats: objectKeyString[];
   activeChatId: string;
   chatsCard: NodeListOf<HTMLDivElement>;
   messages: string[];
@@ -50,7 +51,7 @@ class MainPage extends Block {
           link: AVATAR_MINI,
           alt: 'User avatar',
           className: 'message__avatar',
-        }),
+        }).render(),
         text: "Why didn't he come and talk to me himself?",
       }).render(),
       messages: '',
@@ -146,7 +147,11 @@ class MainPage extends Block {
     return chatApi
       .getChats()
       .then((res) => {
-        this.chats = res;
+        if (Array.isArray(res)) {
+          this.chats = res;
+          return;
+        }
+        return Promise.reject(IS_NOT_ARRAY);
       })
       .then(() => {
         this.setProps({ chatCards: this.getChatCards() });
@@ -186,7 +191,7 @@ class MainPage extends Block {
             link: !avatar ? AVATAR_MINI : `${AVATAR_URL}${avatar}`,
             alt: title,
             className: 'chat-card__img',
-          }),
+          }).render(),
           title,
           text: 'Sometime the text will appear here...',
           chatId: id,
@@ -470,7 +475,7 @@ class MainPage extends Block {
       popup: popup ? popup : ' ',
       messagesClassNameContainer,
       messagesClassNameStartContainer,
-      loader: this._setLoader(isLoad),
+      loader: this._setLoader(Boolean(isLoad)),
     });
   }
 }

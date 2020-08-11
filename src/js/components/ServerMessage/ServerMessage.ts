@@ -1,8 +1,5 @@
-import { Block } from '../../util/Block/Block';
-import {
-  SimpleTemplateEngine,
-  objectKeyStringNumber,
-} from '../../util/Simple-template-engine/simple-template-engine';
+import { Block, propsObject } from '../../util/Block/Block';
+import { SimpleTemplateEngine } from '../../util/Simple-template-engine/simple-template-engine';
 
 import { template } from './template';
 
@@ -12,7 +9,7 @@ class ServerMessage extends Block {
   ERR_CLASS_NAME = 'auth__server-message_show_err';
   MESSAGE_CLASS_NAME = 'auth__server-message_show_message';
   activeClass: string;
-  constructor(props: objectKeyStringNumber) {
+  constructor(props: propsObject) {
     super('div', props);
   }
 

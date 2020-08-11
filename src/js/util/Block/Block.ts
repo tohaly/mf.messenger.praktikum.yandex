@@ -1,7 +1,7 @@
 import { EventBus, IEventBus } from '../Event-bus/Event-bus';
 
 type propsObject = {
-  [key: string]: any;
+  [key: string]: string | number | boolean;
 };
 
 interface IBlock {
@@ -30,7 +30,7 @@ interface IBlock {
 }
 
 class Block implements IBlock {
-  EVENTS: { [key: string]: string } = {
+  EVENTS: objectKeyString = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
@@ -84,7 +84,7 @@ class Block implements IBlock {
 
   componentDidMount(): void {}
 
-  _componentDidUpdate(oldProps: propsObject, newProps: propsObject): void {
+  _componentDidUpdate(): void {
     const response = this.componentDidUpdate();
     if (!response) {
       return;
@@ -115,20 +115,22 @@ class Block implements IBlock {
     this._setLastFocusInput();
   }
 
-  render(): any {}
+  render(): string {
+    return 'There is nothing to render';
+  }
 
   getContent(): HTMLElement {
     return this.element;
   }
 
-  _makePropsProxy = (props: propsObject): propsObject => {
+  _makePropsProxy = (props: propsObject) => {
     return new Proxy(props, {
-      get(target: propsObject, prop: string | number) {
+      get(target: propsObject, prop: keyof propsObject) {
         const value = target[prop];
-        return typeof value === 'function' ? value.bind(target) : value;
+        return value;
       },
 
-      set: (target: any, prop: string | number, value: string): boolean => {
+      set: (target: propsObject, prop: keyof propsObject, value: string): boolean => {
         target[prop] = value;
         this.eventBus().emit(this.EVENTS.FLOW_CDU, { ...target }, target);
         return true;

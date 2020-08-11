@@ -39,13 +39,13 @@ describe('SimpleTemplateEngine', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('Возврат undefined если передано не правильное имя', () => {
+  it('Возврат "Prop is not find" если передано не правильное имя', () => {
     const ctx = { text: 'Click' };
     const stringWithProp = '<button>{% tex %}</button>';
     const template = new SimpleTemplateEngine(stringWithProp);
 
     const actual = template.getNode(ctx).outerHTML;
-    const expected = '<button>undefined</button>';
+    const expected = '<button>Prop is not find</button>';
     expect(actual).toEqual(expected);
   });
 });

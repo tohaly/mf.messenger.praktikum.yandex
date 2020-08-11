@@ -1,34 +1,37 @@
 import { BaseAPI } from './baseApi';
 
 class ChatApi extends BaseAPI {
-  _url: string;
-  constructor() {
-    super();
-    this._url = this._baseUrl + '/chats/';
-  }
+  handles = {
+    CREATE_CHAT: '/chats/',
+    GET_CHAT: '/chats/',
+    AVATAR: '/chats/avatar',
+  };
 
-  createChat(body: { [key: string]: string }) {
+  createChat(body: objectKeyString) {
     const options = {
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     };
+    const handle = this.getFullUrl(this.handles.CREATE_CHAT);
 
-    return this._http.post(this._url, options).then((res: any) => this.getResponse(res));
+    return this._http.post(handle, options).then(this.getResponse);
   }
 
   getChats() {
-    return this._http.get(this._url).then((res: any) => this.getResponseWithParse(res));
+    const handle = this.getFullUrl(this.handles.GET_CHAT);
+
+    return this._http.get(handle).then(this.getResponseWithParse);
   }
 
-  avatar(body: any) {
+  avatar(body: FormData) {
     const options = {
       body,
     };
-    const route = 'avatar';
+    const handle = this.getFullUrl(this.handles.AVATAR);
 
-    return this._http.put(this._url + route, options).then((res: any) => this.getResponse(res));
+    return this._http.put(handle, options).then(this.getResponse);
   }
 }
 

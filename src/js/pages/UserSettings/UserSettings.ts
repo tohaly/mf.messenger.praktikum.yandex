@@ -12,7 +12,7 @@ import { inputsProps } from './inputsProps';
 import { passwordValidator } from '../../util/validators';
 
 import { AuthApi } from '../../API/authApi';
-import { UserApi } from '../../API/useApi';
+import { UserApi } from '../../API/userApi';
 
 import {
   AVATAR_URL,
@@ -259,7 +259,7 @@ class UserSettings extends Block {
 
     this.setProps({ isLoad: true });
     userApi
-      .avatar(formData)
+      .getAvatar(formData)
       .then(({ avatar, login }) => {
         this.setProps({
           avatar: new Avatar({
@@ -402,7 +402,7 @@ class UserSettings extends Block {
       userInfoServerMessage,
       passwordServerMessage,
       avatarServerMessage,
-      loader: this._setLoader(isLoad),
+      loader: this._setLoader(Boolean(isLoad)),
     });
   }
 }
