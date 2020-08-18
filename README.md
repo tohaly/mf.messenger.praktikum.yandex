@@ -14,7 +14,7 @@ Version: v.1.0.0
 Клиент мессенджера. Учебный проект для тренировки навыков програмирования. В данном проекте были реализованны: реактивная компонента с собственным жизненым циклом(с применением паттерна event bus), роутинг(singleton, mediator), собственная реализация `fetch` при помощи `XMLHttpRequest`. Применены полученные навыки тестирвоания на `Jest`. 
 
 ### Что было сделано
-- Разработан дизай в `Figma` [макет](https://www.figma.com/file/6I5ORSR415c6Q0JNxVatUe/Chat-maket?node-id=0%3A1&viewport=25%2C180%2C0.16015595197677612) или можно посмотреть скриншоты [Папка со скриншотами](https://github.com/tohaly/mf.messenger.praktikum.yandex/tree/master/ui);
+- Разработан дизай в `Figma` [макет](https://www.figma.com/file/6I5ORSR415c6Q0JNxVatUe/Chat-maket?node-id=0%3A1&viewport=25%2C180%2C0.16015595197677612) или можно посмотреть скриншоты [директория со скриншотами](https://github.com/tohaly/mf.messenger.praktikum.yandex/tree/master/ui);
 - Верстка `HTML`, `CSS`, `БЭМ`;
 - Напсиан собственный шаблонизатор, реактивная компонента, роутинг;
 - Реализация `fetch`;
