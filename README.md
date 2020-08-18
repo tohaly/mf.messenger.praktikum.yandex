@@ -88,11 +88,7 @@ Version: v.1.0.0
         npm run eslintFix
     ```
 ### Запуск тестирования 
-    ```
         npm run test
-    ```
 
 ### Запуск проекта на nodejs express
-    ```
         npm run start
-    ```
