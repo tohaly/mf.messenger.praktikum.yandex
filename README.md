@@ -2,6 +2,13 @@
 
 Version: v.1.0.0
 
+## Ссылки на развернутый проект
+
+```
+На heroku: https://tohalb-chat.herokuapp.com/
+На Netlify: https://ecstatic-edison-b968c0.netlify.app/
+```
+
 ## Описание
 
 Клиент мессенджера. Учебный проект для тренировки навыков програмирования. В данном проекте были реализованны: реактивная компонента с собственным жизненым циклом(с применением паттерна event bus), роутинг(singleton, mediator), собственная реализация `fetch` при помощи `XMLHttpRequest`. Применены полученные навыки тестирвоания на `Jest`. 
@@ -18,7 +25,10 @@ Version: v.1.0.0
     - html: `HtmlWebpackPlugin`;
     - обработка css: `css-loader`, `style-loader`, `postcss-loader`, `autoprefixer`, `cssnano`, `mini-css-extract-plugin`;
     - сборка TS/JS: `babel`, `ts-loader`;
-- Кодстайлинг: Prettier, Eslint.
+- Кодстайлинг: `prettier`, `eslint`;
+- Статику раздает `express` на `nodejs`;
+- Защита от DOS при помощи утилиты `express-rate-limit`;
+- Precomit утилита husky(перед комитом запускается тестирование команда `npm run test`);
 
 ## Использование
 ### Локальный запуск
@@ -35,6 +45,24 @@ Version: v.1.0.0
         npm run dev
     ```
 
+### Публикация образа на Heroku
+
+1. Войти в реестр контейнеров:
+    ```
+        heroku container:login
+    ```
+2. Создание и отправка образа в реестр:
+    ```
+        heroku container:push web
+    ```
+3. Релиз образа:
+    ```
+        heroku container:release web
+    ```
+4. Открыть приложение в браузере:
+    ```
+        heroku open
+    ```
 ### Публикация на Netlify
 1. Сделать форк проекта
 2. Склонировать репозиторий
@@ -59,16 +87,12 @@ Version: v.1.0.0
     ```
         npm run eslintFix
     ```
+### Запуск тестирования 
+    ```
+        npm run test
+    ```
 
 ### Запуск проекта на nodejs express
-  ```
-    npm run start
-  ```
-
-
-## Ссылки на развернутый проект
-
-```
-На heroku: https://tohalb-chat.herokuapp.com/
-На Netlify: https://ecstatic-edison-b968c0.netlify.app/
-```
+    ```
+        npm run start
+    ```
