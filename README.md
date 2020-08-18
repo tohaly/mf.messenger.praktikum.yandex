@@ -92,3 +92,6 @@ Version: v.1.0.0
 
 ### Запуск проекта на nodejs express
         npm run start
+
+## В планах
+- [ ] Реализовать обмен сообщениями через websocket;
