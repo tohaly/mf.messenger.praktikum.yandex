@@ -34,7 +34,7 @@ Version: v.1.0.0
 ### Локальный запуск
 1. Склонировать репозиторий
     ```
-        git clone https://github.com/tohaly/bestbuddies.github.io.git
+        git clone https://github.com/tohaly/mf.messenger.praktikum.yandex.git
     ```
 2. Доставить отсутствющие модули npm
     ```
@@ -67,7 +67,7 @@ Version: v.1.0.0
 1. Сделать форк проекта
 2. Склонировать репозиторий
     ```
-        git clone https://github.com/tohaly/bestbuddies.github.io.git
+        git clone https://github.com/tohaly/mf.messenger.praktikum.yandex.git
     ```
 3. Доставить отсутствующие модули npm
     ```
